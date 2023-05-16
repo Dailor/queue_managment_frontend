@@ -37,7 +37,7 @@ export const directorLinks: IRoleLinks = {
 
 export const commonLinks: IRoleLinks = {
     heading: 'Сотрудник',
-    prefix: '/staff',
+    prefix: '/operator',
     links: [
         {
             icon: <NoteIcon/>,
