@@ -45,6 +45,7 @@ export const LoginForm = () => {
             loginRequest(values)
                 .then((r) => {
                     const {accessToken, refreshToken} = r.data
+
                     setAuth(accessToken, refreshToken)
                 })
                 .catch(e => {

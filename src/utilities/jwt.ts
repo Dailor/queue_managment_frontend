@@ -14,8 +14,8 @@ export interface ISetAuth {
 const LIFE_TIME_TO_UPDATE_MULTIPLIER = 0.5
 
 export const setJwtTokens: ISetAuth = (accessToken, refreshToken) => {
-    localStorage.setItem(ACCEPT_TOKEN_KEY, accessToken)
-    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+    void localStorage.setItem(ACCEPT_TOKEN_KEY, accessToken)
+    void localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
 }
 
 export const getAccessTokenFromLocalStorage = () => {

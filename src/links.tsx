@@ -1,4 +1,5 @@
 import PeopleIcon from '@mui/icons-material/People'
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard'
 import BusinessIcon from '@mui/icons-material/Business'
 import TurnedInIcon from '@mui/icons-material/TurnedIn'
 import CategoryIcon from '@mui/icons-material/Category'
@@ -19,40 +20,29 @@ export const adminLinks: IRoleLinks = {
             title: 'Пользователи',
             to: '/users',
         },
-        {
-            icon: <BusinessIcon/>,
-            title: 'Департаменты',
-            to: '/departments'
-        }
     ]
 }
 
 export const directorLinks: IRoleLinks = {
-    heading: 'Директор Департамента',
-    prefix: '/director',
+    heading: 'Dashboard',
+    prefix: '/dashboard',
     links: [
-
+        {
+            icon: <SpaceDashboardIcon/>,
+            title: 'Dashboard',
+            to: '#'
+        }
     ]
 }
 
-export const commonLinks: IRoleLinks = {
-    heading: 'Сотрудник',
+export const operatorLinks: IRoleLinks = {
+    heading: 'Оператор',
     prefix: '/operator',
     links: [
         {
             icon: <NoteIcon/>,
-            title: 'Запросы',
-            to: '/requests'
-        },
-        {
-            icon: <TurnedInIcon/>,
-            title: 'Наборы',
-            to: '/kits'
-        },
-        {
-            icon: <CategoryIcon/>,
-            title: 'Предметы',
-            to: '/items'
+            title: 'Обслуживание',
+            to: '#'
         }
     ]
 }

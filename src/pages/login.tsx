@@ -8,14 +8,9 @@ import {FaMicrosoft} from "react-icons/fa"
 import Image from "next/image"
 
 import logo from '/public/logo.png'
-import {OPENID_AUTH_URL} from "@/apiEndpoints"
 import {LoginForm} from "@/components/forms/LoginForm"
 
 export default function Login() {
-    const redirectMicrosoftOAuth = () => {
-        window.location.replace(OPENID_AUTH_URL)
-    }
-
     return (
         <>
             <Head>

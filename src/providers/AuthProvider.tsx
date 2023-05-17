@@ -17,6 +17,8 @@ export interface LocalUser {
 
 interface AuthContextType extends IAuthState {
     isAdmin: boolean,
+    isDashboard,
+    isOperator,
     setAuth: ISetAuth,
     redirectToLogin: {(): Promise<any>}
     logout: { (): void }

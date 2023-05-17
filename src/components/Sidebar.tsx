@@ -19,58 +19,17 @@ import {useAuth} from "@/providers/AuthProvider"
 import Image from "next/image"
 import {useRouter} from "next/router"
 
-import {adminLinks, commonLinks, directorLinks} from '@/links'
+import {adminLinks, directorLinks} from '@/links'
 import logo from '/public/logo.png'
 
 export const drawerWidth = 260
 
-interface SidebarLinksProps {
-    heading: string
-    prefix?: string
-    links: Links
-}
 
 interface SidebarProps {
     isSidebarOpen: boolean
     toggleIsSidebarOpen: (isOpen: boolean) => void
 }
 
-const SidebarLinks = ({prefix, heading, links}: SidebarLinksProps) => {
-    const router = useRouter()
-
-    const processPath = (path) => {
-        return (prefix || '') + path
-    }
-
-    const onClick = (link) => {
-        void router.push(link)
-    }
-
-    return (
-        <>
-            <Divider/>
-            <List
-                subheader={
-                    <ListSubheader component="div">
-                        {heading}
-                    </ListSubheader>
-                }>
-                {links.map((link, index) => {
-                    const processedLink = processPath(link.to)
-
-                    return <ListItem key={index} selected={router.pathname == processedLink} disablePadding>
-                        <ListItemButton onClick={() => onClick(processedLink)}>
-                            <ListItemIcon>
-                                {link.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={link.title}/>
-                        </ListItemButton>
-                    </ListItem>
-                })}
-            </List>
-        </>
-    )
-}
 
 const LogoutButton = () => {
     const {logout} = useAuth()
@@ -87,8 +46,27 @@ const LogoutButton = () => {
     )
 }
 
+const SidebarLink = ({path, title, icon}) => {
+    const router = useRouter()
+
+    const onClick = (path) => {
+        void router.push(path)
+    }
+
+    return (
+        <ListItem selected={router.pathname == path} disablePadding>
+            <ListItemButton onClick={() => onClick(path)}>
+                <ListItemIcon>
+                    {icon}
+                </ListItemIcon>
+                <ListItemText primary={title}/>
+            </ListItemButton>
+        </ListItem>
+    )
+}
+
 const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
-    const {isAdmin, isDirector} = useAuth()
+    const {isAdmin, } = useAuth()
     const router = useRouter()
 
     useEffect(() => {
@@ -110,19 +88,6 @@ const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
                 toggleIsSidebarOpen(open)
             }
 
-    const list = () => {
-        return <>
-            {isAdmin && (
-                <SidebarLinks {...adminLinks}/>
-            )}
-            {isDirector && (
-                <SidebarLinks {...directorLinks}/>
-            )}
-            <SidebarLinks {...commonLinks}/>
-            <LogoutButton/>
-        </>
-    }
-
     return (
         <SwipeableDrawer
             sx={{width: drawerWidth}}
@@ -130,12 +95,15 @@ const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
             onOpen={toggleDrawer(true)}
             onClose={toggleDrawer(false)}
             variant="temporary"
-            anchor="left">
+            anchor="right">
             <Box>
                 <Toolbar sx={{'backgroundColor': 'primary.main'}}>
                     <Image src={logo} alt="IITU Logo" width={211} height={32}/>
                 </Toolbar>
-                {list()}
+                <List>
+
+                </List>
+                <LogoutButton/>
             </Box>
         </SwipeableDrawer>
     )
