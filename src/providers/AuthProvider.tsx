@@ -11,16 +11,17 @@ interface IAuthState {
 }
 
 export interface LocalUser {
-    fullName: string,
+    fullName: string
     role: number
 }
 
 interface AuthContextType extends IAuthState {
-    isAdmin: boolean,
-    isDashboard,
-    isOperator,
-    setAuth: ISetAuth,
-    redirectToLogin: {(): Promise<any>}
+    isAdmin: boolean
+    isDashboard: boolean
+    isOperator: boolean
+    isTerminal: boolean
+    setAuth: ISetAuth
+    redirectToLogin: { (): Promise<any> }
     logout: { (): void }
 }
 
@@ -37,6 +38,7 @@ export const AuthProvider = ({children}: Props) => {
     const isAdmin = user?.role === UserRolesEnum.ADMIN
     const isDashboard = user?.role === UserRolesEnum.DASHBOARD
     const isOperator = user?.role === UserRolesEnum.OPERATOR
+    const isTerminal = user?.role === UserRolesEnum.TERMINAL
 
     const redirectToLogin = useCallback(() => {
         return router.push('/login')
@@ -85,6 +87,7 @@ export const AuthProvider = ({children}: Props) => {
                 isAdmin,
                 isDashboard,
                 isOperator,
+                isTerminal,
                 isAuthFetching,
                 setAuth,
                 redirectToLogin,

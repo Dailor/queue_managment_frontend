@@ -21,6 +21,7 @@ import {useRouter} from "next/router"
 
 import {adminLinks, directorLinks} from '@/links'
 import logo from '/public/logo.png'
+import {NavigationButtonLogout} from "@/components/navigation/NavigationButton";
 
 export const drawerWidth = 260
 
@@ -30,43 +31,9 @@ interface SidebarProps {
     toggleIsSidebarOpen: (isOpen: boolean) => void
 }
 
-
-const LogoutButton = () => {
-    const {logout} = useAuth()
-
-    return (
-        <ListItem disablePadding>
-            <ListItemButton onClick={logout}>
-                <ListItemIcon>
-                    <ExitToAppIcon/>
-                </ListItemIcon>
-                <ListItemText primary='Выйти'/>
-            </ListItemButton>
-        </ListItem>
-    )
-}
-
-const SidebarLink = ({path, title, icon}) => {
-    const router = useRouter()
-
-    const onClick = (path) => {
-        void router.push(path)
-    }
-
-    return (
-        <ListItem selected={router.pathname == path} disablePadding>
-            <ListItemButton onClick={() => onClick(path)}>
-                <ListItemIcon>
-                    {icon}
-                </ListItemIcon>
-                <ListItemText primary={title}/>
-            </ListItemButton>
-        </ListItem>
-    )
-}
-
 const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
-    const {isAdmin, } = useAuth()
+    const {isAdmin, isDashboard, isOperator} = useAuth()
+
     const router = useRouter()
 
     useEffect(() => {
@@ -102,8 +69,8 @@ const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
                 </Toolbar>
                 <List>
 
+                    <NavigationButtonLogout/>
                 </List>
-                <LogoutButton/>
             </Box>
         </SwipeableDrawer>
     )

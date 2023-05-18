@@ -3,9 +3,9 @@ import {AppProps} from "next/app"
 import {useRouter} from "next/router"
 import {useAuth} from "@/providers/AuthProvider"
 import {Box, CircularProgress, Toolbar} from "@mui/material"
-import Sidebar from "@/components/Sidebar"
-import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import Sidebar from "@/components/navigation/Sidebar"
+import Header from "@/components/navigation/Header";
+import Navigation from "@/components/navigation/Navigation";
 
 
 const DefaultLayout = ({Component, pageProps}: AppProps) => {

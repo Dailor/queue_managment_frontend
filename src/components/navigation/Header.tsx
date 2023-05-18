@@ -1,7 +1,8 @@
 import React from 'react'
-import {AppBar, Box, IconButton, Toolbar, Typography} from "@mui/material"
+import {AppBar, Box, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography} from "@mui/material"
 import {useRouter} from "next/router"
 import MenuIcon from '@mui/icons-material/Menu'
+import {useAuth} from "@/providers/AuthProvider"
 
 interface Props {
     isSidebarOpen: boolean
@@ -10,6 +11,18 @@ interface Props {
 
 const Header = ({isSidebarOpen, sidebarToggle}: Props) => {
     const router = useRouter()
+    const {logout} = useAuth()
+
+
+    const logoutButtonRender = () => {
+        return (
+            <ListItem disablePadding>
+                <ListItemButton sx={{textAlign: 'center'}}>
+                    <ListItemText primary={'Выход'}/>
+                </ListItemButton>
+            </ListItem>
+        )
+    }
 
     return (
         <AppBar
@@ -22,12 +35,24 @@ const Header = ({isSidebarOpen, sidebarToggle}: Props) => {
                         IITU Admission Queue
                     </Typography>
                 </Box>
+                <Box sx={{
+                    display: {
+                        xs: 'none',
+                        sm: 'block'
+                    }
+                }}>
+                    <List>
+                        {logoutButtonRender()}
+                    </List>
+                </Box>
                 <IconButton
                     color="inherit"
                     onClick={sidebarToggle}
                     edge="start"
                     sx={{
-                        ...(isSidebarOpen && {display: 'none'}),
+                        display: {
+                            sm: 'none'
+                        }
                     }}
                 >
                     <MenuIcon/>
