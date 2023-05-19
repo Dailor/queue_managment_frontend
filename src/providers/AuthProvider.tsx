@@ -22,7 +22,7 @@ interface AuthContextType extends IAuthState {
     isTerminal: boolean
     setAuth: ISetAuth
     redirectToLogin: { (): Promise<any> }
-    logout: { (): void }
+    logout: Function,
 }
 
 interface Props {

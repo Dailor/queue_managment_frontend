@@ -1,7 +1,5 @@
 export const BACKEND_URL = 'http://localhost:8000'
 
-export const MICROSOFT_TENANT = '70c1157a-941c-4b39-98e6-a0634f2759e7'
-
 export const ACCEPT_TOKEN_KEY = 'access-token'
 export const REFRESH_TOKEN_KEY = 'refresh-token'
 

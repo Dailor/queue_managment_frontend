@@ -1,4 +1,3 @@
-import {BACKEND_URL, MICROSOFT_TENANT} from "@/constants"
 import {getUrlByPathAndParams} from "@/utilities/uri"
 
 export class BaseEndpointAPI {

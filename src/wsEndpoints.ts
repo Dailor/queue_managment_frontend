@@ -3,11 +3,12 @@ const getWebSocketProtocol = () => {
 }
 
 const getWebSocketUrl = (path) => {
-    return getWebSocketProtocol() + location.host + path
+    return getWebSocketProtocol() + location.host + path + '/ws'
 }
 
 const webSocketEndpoints = {
     dashboard: getWebSocketUrl('/dashboard'),
+    terminal: getWebSocketUrl('/terminal'),
     client: getWebSocketUrl('/client')
 }
 
