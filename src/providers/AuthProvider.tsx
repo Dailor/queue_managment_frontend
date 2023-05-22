@@ -66,8 +66,6 @@ export const AuthProvider = ({children}: Props) => {
     const setAuth: ISetAuth = (accessToken, refreshToken) => {
         setJwtTokens(accessToken, refreshToken)
         loadUser()
-
-        router.push('/')
     }
 
     const logout = useCallback(() => {

@@ -30,7 +30,7 @@ const validationSchema = yup.object({
 })
 
 export const LoginForm = () => {
-    const {setAuth} = useAuth()
+    const {setAuth, isAuthFetching} = useAuth()
     const [isFetching, toggleIsFetching] = useState<boolean>(false)
 
     const formik = useFormik({
@@ -89,7 +89,7 @@ export const LoginForm = () => {
                     error={!!formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password || ' '}
                 />
-                <FetchingButton variant='contained' color='primary' type="submit" isFetching={isFetching}
+                <FetchingButton variant='contained' color='primary' type="submit" isFetching={isFetching || isAuthFetching}
                                 fullWidth>Войти</FetchingButton>
             </form>
         </Box>

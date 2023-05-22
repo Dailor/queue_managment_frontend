@@ -3,6 +3,8 @@ import {AppBar, Box, IconButton, List, ListItem, ListItemButton, ListItemText, T
 import {useRouter} from "next/router"
 import MenuIcon from '@mui/icons-material/Menu'
 import {useAuth} from "@/providers/AuthProvider"
+import {NavigationButtonLogout} from "@/components/navigation/NavigationButton"
+import NavigationList from "@/components/navigation/NavigationList";
 
 interface Props {
     isSidebarOpen: boolean
@@ -12,17 +14,6 @@ interface Props {
 const Header = ({isSidebarOpen, sidebarToggle}: Props) => {
     const router = useRouter()
     const {logout} = useAuth()
-
-
-    const logoutButtonRender = () => {
-        return (
-            <ListItem disablePadding>
-                <ListItemButton sx={{textAlign: 'center'}}>
-                    <ListItemText primary={'Выход'}/>
-                </ListItemButton>
-            </ListItem>
-        )
-    }
 
     return (
         <AppBar
@@ -41,9 +32,7 @@ const Header = ({isSidebarOpen, sidebarToggle}: Props) => {
                         sm: 'block'
                     }
                 }}>
-                    <List>
-                        {logoutButtonRender()}
-                    </List>
+                    <NavigationList isHeader={true}/>
                 </Box>
                 <IconButton
                     color="inherit"

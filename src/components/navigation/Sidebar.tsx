@@ -22,6 +22,7 @@ import {useRouter} from "next/router"
 import {adminLinks, directorLinks} from '@/links'
 import logo from '/public/logo.png'
 import {NavigationButtonLogout} from "@/components/navigation/NavigationButton";
+import NavigationList from "@/components/navigation/NavigationList";
 
 export const drawerWidth = 260
 
@@ -67,10 +68,7 @@ const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
                 <Toolbar sx={{'backgroundColor': 'primary.main'}}>
                     <Image src={logo} alt="IITU Logo" width={211} height={32}/>
                 </Toolbar>
-                <List>
-
-                    <NavigationButtonLogout/>
-                </List>
+                <NavigationList/>
             </Box>
         </SwipeableDrawer>
     )

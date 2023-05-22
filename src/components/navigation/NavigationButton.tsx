@@ -1,42 +1,38 @@
 import {useAuth} from "@/providers/AuthProvider"
-import {ListItem, ListItemButton, ListItemIcon, ListItemText} from "@mui/material"
+import {ListItem, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme} from "@mui/material"
 import ExitToAppIcon from "@mui/icons-material/ExitToApp"
 import React, {useCallback} from "react"
 import {useRouter} from "next/router"
+import {UserRolesEnum} from "@/constants"
 
 type NavigationButtonDefaultProps = {
     text: string
-    icon: React.ReactNode | undefined
+    userRole?: UserRolesEnum
+    icon?: React.ReactNode
+    to?: string
+    onClick?: Function
 }
 
-type NavigationButtonWithPathProps = NavigationButtonDefaultProps & {
-    to: string
-}
 
-type NavigationButtonWithClickProps = NavigationButtonDefaultProps &
-    {
-        onClick: Function
-    }
-
-type NavigationButtonProps = NavigationButtonWithPathProps | NavigationButtonWithClickProps
-
-export const NavigationButton = (props: NavigationButtonProps) => {
+export const NavigationButton = (props: NavigationButtonDefaultProps) => {
     const router = useRouter()
-    const onClickProps = (props as NavigationButtonWithClickProps).onClick
-    const pathProps = (props as NavigationButtonWithPathProps).to
+    const theme = useTheme()
+    const upSm = useMediaQuery(theme.breakpoints.up('sm'))
 
 
     let onClick = useCallback(() => {
-        if (onClickProps) {
-            return onClickProps()
+        if (props.onClick) {
+            return props.onClick()
         }
-        return router.push(pathProps)
-    }, [onClickProps, pathProps, router])
+        if(props.to){
+            return void router.push(props.to)
+        }
+    }, [props, router])
 
     return (
         <ListItem disablePadding>
             <ListItemButton onClick={onClick}>
-                {props.icon && (
+                {!upSm && props.icon && (
                     <ListItemIcon>
                         {props.icon}
                     </ListItemIcon>

@@ -27,8 +27,8 @@ export const getRefreshTokenFromLocalStorage = () => {
 }
 
 export const removeJwtTokens = () => {
-    localStorage.removeItem(ACCEPT_TOKEN_KEY)
-    localStorage.removeItem(REFRESH_TOKEN_KEY)
+    void localStorage.removeItem(ACCEPT_TOKEN_KEY)
+    void localStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 
 export const isTokenExpired = (token: string | null): boolean => {

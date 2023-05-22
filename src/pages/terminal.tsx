@@ -21,7 +21,6 @@ export default function TerminalPage() {
             terminalSocketRef.current = new TerminalSocketService()
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage())
         }
-
     })
 
     return (
