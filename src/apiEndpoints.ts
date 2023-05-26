@@ -1,5 +1,3 @@
-import {getUrlByPathAndParams} from "@/utilities/uri"
-
 export class BaseEndpointAPI {
     static preBase = '/api'
     static base
@@ -39,4 +37,10 @@ export class OperatorEndpointsAPI extends BaseEndpointAPI {
 
 export class DashboardEndpointsAPI extends BaseEndpointAPI {
     static base = '/v1/dashboard'
+}
+
+export class TicketEndpointsAPI {
+    static base = '/ticket'
+
+    static scan = this.base + '/scanner'
 }

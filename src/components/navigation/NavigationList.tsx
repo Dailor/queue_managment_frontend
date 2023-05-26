@@ -9,12 +9,15 @@ interface Props {
 }
 
 const NavigationList = ({isHeader}: Props) => {
-    const {isTerminal} = useAuth()
+    const {isTerminal, isOperator} = useAuth()
 
     return (
         <List sx={{display: isHeader ? 'flex' : 'block'}}>
             {(isTerminal) && (
                 <NavigationButton text={'Терминал'} icon={<TerminalIcon/>} to={'/terminal'}/>
+            )}
+            {(isOperator) && (
+                <NavigationButton text={'Оператор'} icon={<TerminalIcon/>} to={'/operator'}/>
             )}
             <NavigationButtonLogout/>
         </List>

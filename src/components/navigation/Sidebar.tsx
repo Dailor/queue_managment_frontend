@@ -1,28 +1,18 @@
 import React, {useEffect} from 'react'
 import {
     Box,
-    Divider,
-    Drawer,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    ListSubheader, SwipeableDrawer,
+    SwipeableDrawer,
     Toolbar
 } from "@mui/material"
 
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 import {useAuth} from "@/providers/AuthProvider"
 
 import Image from "next/image"
 import {useRouter} from "next/router"
 
-import {adminLinks, directorLinks} from '@/links'
 import logo from '/public/logo.png'
-import {NavigationButtonLogout} from "@/components/navigation/NavigationButton";
-import NavigationList from "@/components/navigation/NavigationList";
+import NavigationList from "@/components/navigation/NavigationList"
 
 export const drawerWidth = 260
 

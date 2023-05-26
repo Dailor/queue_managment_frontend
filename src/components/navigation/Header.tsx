@@ -4,7 +4,9 @@ import {useRouter} from "next/router"
 import MenuIcon from '@mui/icons-material/Menu'
 import {useAuth} from "@/providers/AuthProvider"
 import {NavigationButtonLogout} from "@/components/navigation/NavigationButton"
-import NavigationList from "@/components/navigation/NavigationList";
+import NavigationList from "@/components/navigation/NavigationList"
+import logo from '/public/logo.png'
+import Image from "next/image"
 
 interface Props {
     isSidebarOpen: boolean
@@ -22,9 +24,7 @@ const Header = ({isSidebarOpen, sidebarToggle}: Props) => {
         >
             <Toolbar sx={{justifyContent: 'space-betweeen'}}>
                 <Box sx={{flexGrow: 1}}>
-                    <Typography variant="h6" noWrap component="div">
-                        IITU Admission Queue
-                    </Typography>
+                    <Image src={logo} alt="IITU Logo" width={211} height={32}/>
                 </Box>
                 <Box sx={{
                     display: {

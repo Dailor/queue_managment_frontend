@@ -10,7 +10,7 @@ import Image from "next/image"
 import logo from '/public/logo.png'
 import {LoginForm} from "@/components/forms/LoginForm"
 
-export default function Login() {
+export default function LoginPage() {
     return (
         <>
             <Head>

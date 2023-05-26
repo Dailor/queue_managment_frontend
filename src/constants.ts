@@ -5,8 +5,8 @@ export const REFRESH_TOKEN_KEY = 'refresh-token'
 
 export enum UserRolesEnum {
     ADMIN,
-    DASHBOARD,
     OPERATOR,
+    DASHBOARD,
     TERMINAL
 }
 

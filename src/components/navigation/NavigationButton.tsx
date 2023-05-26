@@ -24,7 +24,7 @@ export const NavigationButton = (props: NavigationButtonDefaultProps) => {
         if (props.onClick) {
             return props.onClick()
         }
-        if(props.to){
+        if (props.to) {
             return void router.push(props.to)
         }
     }, [props, router])
@@ -37,7 +37,12 @@ export const NavigationButton = (props: NavigationButtonDefaultProps) => {
                         {props.icon}
                     </ListItemIcon>
                 )}
-                <ListItemText primary={props.text}/>
+                <ListItemText primary={props.text}
+                              sx={{
+                                  '& .MuiListItemText-primary': {
+                                      fontWeight: 600
+                                  }
+                              }}/>
             </ListItemButton>
         </ListItem>
     )

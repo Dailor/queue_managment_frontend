@@ -17,7 +17,8 @@ const getWebSocketUrl = (path) => {
 const webSocketEndpoints = {
     dashboard: () => getWebSocketUrl('/dashboard'),
     terminal: () => getWebSocketUrl('/terminal'),
-    client: () => getWebSocketUrl('/client')
+    ticket: () => getWebSocketUrl('/ticket'),
+    operator: () => getWebSocketUrl('/operator')
 }
 
 export default webSocketEndpoints
