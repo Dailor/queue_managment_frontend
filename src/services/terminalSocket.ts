@@ -7,8 +7,8 @@ class TerminalSocketService extends BaseSocketService {
     setTicketQr: Function
     switchOnLoader: Function
 
-    constructor({setTicketQr, switchOnLoader}) {
-        super()
+    constructor({setTicketQr, switchOnLoader, toggleIsSocketClosed}) {
+        super(toggleIsSocketClosed)
         this.setTicketQr = setTicketQr
         this.switchOnLoader = switchOnLoader
     }
@@ -22,9 +22,7 @@ class TerminalSocketService extends BaseSocketService {
             )
         }
 
-        this.socket.onclose = (event) => {
-            console.log(event)
-        }
+        this.socket.onclose = this.onSocketClose
 
         this.socket.onmessage = (event) => {
             const data = this.parse(event.data)
@@ -46,6 +44,7 @@ class TerminalSocketService extends BaseSocketService {
             }
         }
     }
+
 }
 
 export default TerminalSocketService

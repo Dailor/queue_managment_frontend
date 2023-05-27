@@ -1,6 +1,6 @@
 import Head from "next/head"
-import React, {useEffect, useMemo, useRef, useState} from "react"
-import {Box, Grid, Skeleton, Typography} from "@mui/material"
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
+import {Alert, Box, Grid, Skeleton, Snackbar, Typography} from "@mui/material"
 import ReadyIcon from "@/components/icons/ReadyIcon"
 import {useRouter} from "next/router"
 import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
@@ -23,11 +23,18 @@ const SkeletonPlaceHolderWrapper = ({children, isReady, skeletonProps}: Skeleton
 
 export default function TicketPage() {
     const router = useRouter()
-
     const ticketSocketRef = useRef<TicketSocketService>()
+
+    const [isSocketClosed, toggleIsSocketClosed] = useState()
 
     const [ticketFull, setTicketFull] = useState<TicketHumanRead>()
     const [inFrontCount, setInFrontCount] = useState<number | null>(null)
+
+    const [isAlwaysConnAlertOpened, toggleIsAlwaysConnAlertOpened] = useState(true)
+
+    const setIsCalled = useCallback(({windowNumber}) => {
+        // TODO:
+    }, [])
 
     useEffect(() => {
         const ticketHash = router.query.ticketHash as string
@@ -42,7 +49,12 @@ export default function TicketPage() {
         }
 
         if (responseStatusOK) {
-            ticketSocketRef.current = new TicketSocketService({setTicketFull, setInFrontCount})
+            ticketSocketRef.current = new TicketSocketService({
+                setTicketFull,
+                setInFrontCount,
+                setIsCalled,
+                toggleIsSocketClosed
+            })
             ticketSocketRef.current?.init(ticketHash)
         }
 
@@ -66,18 +78,26 @@ export default function TicketPage() {
             minute: '2-digit'
         }
 
+        const formattedDate = date.toLocaleDateString(
+            locale, dateOptions
+        ).replace(
+            /\//g, '.'
+        )
 
-        return `${date.toLocaleDateString(locale, dateOptions).replace(/\//g, '.')} / ${date.toLocaleTimeString(locale, timeOptions)}`
+        const formattedTime = date.toLocaleTimeString(locale, timeOptions)
+
+        return `${formattedDate} / ${formattedTime}`
     }, [ticketFull])
 
-    let isLoaded = !!ticketFull && (inFrontCount !== null)
+    const isWindowNumberNotSet = ticketFull?.windowNumber === -1
+    const isLoaded = !!ticketFull && inFrontCount !== null
 
     return (
         <>
             <Head>
-                <title>Талон</title>
+                <title>Талон | {ticketFull?.number}</title>
             </Head>
-            <Grid container sx={{justifyContent: 'center', paddingTop: 13}}>
+            <Grid container sx={{justifyContent: 'center', paddingTop: '5vh'}}>
                 <Grid item xs={12} sm={8} md={5} lg={4}
                       sx={{
                           paddingTop: 4,
@@ -124,7 +144,7 @@ export default function TicketPage() {
                             skeletonProps={{
                                 variant: 'text', sx: {
                                     fontSize: 90,
-                                    width: 120
+                                    width: 150
                                 }
                             }}
                         >
@@ -142,7 +162,7 @@ export default function TicketPage() {
                             }}>
                             <Typography color='secondary' sx={{fontSize: 19, fontWeight: '700'}}>
                                 Перед вами <Typography color='primary'
-                                                       variant='span'>{inFrontCount}</Typography> человек
+                                                       variant='span'>{Math.max(0, inFrontCount as number)}</Typography> человек
                             </Typography>
                         </SkeletonPlaceHolderWrapper>
                         <SkeletonPlaceHolderWrapper
@@ -159,31 +179,57 @@ export default function TicketPage() {
                         </SkeletonPlaceHolderWrapper>
                     </Box>
                     <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                        <SkeletonPlaceHolderWrapper
-                            isReady={isLoaded}
-                            skeletonProps={{
-                                variant: 'text', sx: {
-                                    fontSize: 27,
-                                    width: 290
-                                }
-                            }}>
-                            <Typography sx={{fontSize: 24, fontWeight: '700'}}>Не пропустите очередь</Typography>
-                        </SkeletonPlaceHolderWrapper>
-                        <SkeletonPlaceHolderWrapper
-                            isReady={isLoaded}
-                            skeletonProps={{
-                                variant: 'text', sx: {
-                                    fontSize: 15,
-                                    width: 250
-                                }
-                            }}>
-                            <Typography color='secondary' sx={{fontSize: 15, fontWeight: '700'}}>
-                                Смотрите номер талона на табло
-                            </Typography>
-                        </SkeletonPlaceHolderWrapper>
+                        {(isWindowNumberNotSet || !isLoaded) && (
+                            <>
+                                <SkeletonPlaceHolderWrapper
+                                    isReady={isLoaded}
+                                    skeletonProps={{
+                                        variant: 'text', sx: {
+                                            fontSize: 27,
+                                            width: 290
+                                        }
+                                    }}>
+                                    <Typography sx={{fontSize: 24, fontWeight: '700'}}>Не пропустите
+                                        очередь</Typography>
+                                </SkeletonPlaceHolderWrapper>
+                                <SkeletonPlaceHolderWrapper
+                                    isReady={isLoaded}
+                                    skeletonProps={{
+                                        variant: 'text', sx: {
+                                            fontSize: 15,
+                                            width: 250
+                                        }
+                                    }}>
+                                    <Typography color='secondary' sx={{fontSize: 15, fontWeight: '700'}}>
+                                        Смотрите за очередью
+                                        <br/>
+                                        на этой странице или на табло
+                                    </Typography>
+                                </SkeletonPlaceHolderWrapper>
+                            </>
+                        )}
+                        {!isWindowNumberNotSet && isLoaded && (
+                            <>
+                                <Typography color='success.main' sx={{fontSize: 24, fontWeight: '700'}}>
+                                    Пришла ваша очередь
+                                </Typography>
+                                <Typography sx={{fontSize: 20, fontWeight: '700'}}>
+                                    Пройдите к окну: <Typography color='warning.main'
+                                                                 variant='span'>{ticketFull?.windowNumber}</Typography>
+                                </Typography>
+                            </>
+                        )}
                     </Box>
                 </Grid>
             </Grid>
+            <Snackbar
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                open={isAlwaysConnAlertOpened && isLoaded}>
+                <Alert severity="error" onClose={() => toggleIsAlwaysConnAlertOpened(false)}>
+                    <div>Не нужно обновлять страницу!</div>
+                    <div>Страница держит постоянное соединение с сервером!</div>
+                </Alert>
+            </Snackbar>
         </>
     )
 }

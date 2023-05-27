@@ -1,18 +1,20 @@
 import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
-import TerminalEvents from "@/services/events/TerminalEvents"
 import TicketEvents from "@/services/events/TicketEvents"
+import OperatorEvents from "@/services/events/OperatorEvents"
 
 
 class TicketSocketService extends BaseSocketService {
     setTicketFull: Function
     setInFrontCount: Function
+    setIsCalled: Function
 
-    constructor({setTicketFull, setInFrontCount}) {
-        super()
+    constructor({setTicketFull, setInFrontCount, setIsCalled, toggleIsSocketClosed}) {
+        super({toggleIsSocketClosed})
 
         this.setTicketFull = setTicketFull
         this.setInFrontCount = setInFrontCount
+        this.setIsCalled = setIsCalled
     }
 
     init(ticketHash: string) {
@@ -35,6 +37,8 @@ class TicketSocketService extends BaseSocketService {
                     return this.setTicketFull(payload.ticket)
                 case TicketEvents.POSITION_LOAD:
                     return this.setInFrontCount(payload.position - 1)
+                case OperatorEvents.CALL_NEXT:
+                    return this.setIsCalled({'windowNumber': payload.payload.windowNumber})
                 default:
                     break
             }

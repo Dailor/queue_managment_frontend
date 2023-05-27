@@ -13,6 +13,8 @@ const getLinkWithTicketHash = (ticket: Ticket) => {
 
 export default function TerminalPage() {
     const terminalSocketRef = useRef<TerminalSocketService>()
+    const [isSocketClosed, toggleIsSocketClosed] = useState()
+
     const [isLoading, toggleIsLoading] = useState<boolean>(true)
 
     const [ticket, setTicket] = useState<Ticket>(null)
@@ -39,12 +41,11 @@ export default function TerminalPage() {
         }
 
         if (responseStatusOK) {
-            terminalSocketRef.current = new TerminalSocketService({setTicketQr, switchOnLoader})
+            terminalSocketRef.current = new TerminalSocketService({toggleIsSocketClosed, setTicketQr, switchOnLoader})
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage())
         }
     }, [])
 
-    const isSocketClosed = terminalSocketRef.current?.socket.readyState == WebSocket.CLOSED
     const isReady = !(isLoading || isSocketClosed)
 
     return (

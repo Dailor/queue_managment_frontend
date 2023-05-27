@@ -11,6 +11,8 @@ export default function OperatorPage() {
     const [currentNumber, setCurrentNumber] = useState<number>()
 
     const operatorSocketRef = useRef<OperatorSocketService>()
+    const [isSocketClosed, toggleIsSocketClosed] = useState()
+
 
     useEffect(() => {
         let responseStatusOK = true
@@ -23,7 +25,11 @@ export default function OperatorPage() {
         }
 
         if (responseStatusOK) {
-            operatorSocketRef.current = new OperatorSocketService({setCountInQueue, setCurrentNumber})
+            operatorSocketRef.current = new OperatorSocketService({
+                setCountInQueue,
+                setCurrentNumber,
+                toggleIsSocketClosed
+            })
             operatorSocketRef.current?.init(getAccessTokenFromLocalStorage())
         }
     }, [])
@@ -50,7 +56,7 @@ export default function OperatorPage() {
                 </Box>
                 <Box>
                     <Typography variant='h5'>Сейчас вы обслуживаете номер:
-                        <Typography color='info'variant={'span'}> {currentNumber}</Typography></Typography>
+                        <Typography color='info' variant={'span'}> {currentNumber}</Typography></Typography>
                 </Box>
             </Container>
         </>

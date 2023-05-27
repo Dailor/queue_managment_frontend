@@ -7,8 +7,8 @@ class TerminalSocketService extends BaseSocketService {
     setCountInQueue: Function
     setCurrentNumber: Function
 
-    constructor({setCountInQueue, setCurrentNumber}) {
-        super()
+    constructor({setCountInQueue, setCurrentNumber, toggleIsSocketClosed}) {
+        super(toggleIsSocketClosed)
 
         this.setCountInQueue = setCountInQueue
         this.setCurrentNumber = setCurrentNumber
