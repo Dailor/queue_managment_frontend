@@ -16,9 +16,20 @@ type SkeletonPlaceHolderWrapperProps = {
 
 const SkeletonPlaceHolderWrapper = ({children, isReady, skeletonProps}: SkeletonPlaceHolderWrapperProps) => {
     if (isReady) {
-        return children
+        return (
+            <>{children}</>
+        )
     }
     return <Skeleton {...skeletonProps} />
+}
+
+interface ISetIsCalled {
+    windowNumber: number
+}
+
+interface ISetTicketInformation {
+    ticket: TicketHumanRead
+    windowNumber: number
 }
 
 export default function TicketPage() {
@@ -28,37 +39,37 @@ export default function TicketPage() {
     const [isSocketClosed, toggleIsSocketClosed] = useState()
 
     const [ticketFull, setTicketFull] = useState<TicketHumanRead>()
+    const [windowNumber, setWindowNumber] = useState<number>(-1)
     const [inFrontCount, setInFrontCount] = useState<number | null>(null)
 
     const [isAlwaysConnAlertOpened, toggleIsAlwaysConnAlertOpened] = useState(true)
 
-    const setIsCalled = useCallback(({windowNumber}) => {
-        // TODO:
-    }, [])
+    const setTicketInformation = ({ticket, windowNumber}: ISetTicketInformation,) => {
+        if (windowNumber !== -1) {
+            setIsCalled({windowNumber})
+        }
+        setTicketFull(ticket)
+    }
+    const setIsCalled = ({windowNumber}: ISetIsCalled) => {
+        const audio = new Audio('/sounds/client_caller.mp3')
+        audio.volume = 0.5
+        audio.play()
+
+        setWindowNumber(windowNumber)
+    }
 
     useEffect(() => {
         const ticketHash = router.query.ticketHash as string
 
-        let responseStatusOK = true
+        ticketSocketRef.current = new TicketSocketService({
+            setTicketInformation,
+            setInFrontCount,
+            setIsCalled,
+            toggleIsSocketClosed
+        })
+        ticketSocketRef.current?.init(ticketHash)
 
-        try {
-            void loadUserMeRequestApi()
-
-        } catch (e) {
-            responseStatusOK = false
-        }
-
-        if (responseStatusOK) {
-            ticketSocketRef.current = new TicketSocketService({
-                setTicketFull,
-                setInFrontCount,
-                setIsCalled,
-                toggleIsSocketClosed
-            })
-            ticketSocketRef.current?.init(ticketHash)
-        }
-
-    }, [])
+    }, [router.query.ticketHash])
 
     const formattedDateTime = useMemo(() => {
         if (!ticketFull?.createdAt)
@@ -89,7 +100,7 @@ export default function TicketPage() {
         return `${formattedDate} / ${formattedTime}`
     }, [ticketFull])
 
-    const isWindowNumberNotSet = ticketFull?.windowNumber === -1
+    const isWindowNumberNotSet = windowNumber === -1
     const isLoaded = !!ticketFull && inFrontCount !== null
 
     return (
@@ -215,7 +226,7 @@ export default function TicketPage() {
                                 </Typography>
                                 <Typography sx={{fontSize: 20, fontWeight: '700'}}>
                                     Пройдите к окну: <Typography color='warning.main'
-                                                                 variant='span'>{ticketFull?.windowNumber}</Typography>
+                                                                 variant='span'>{windowNumber}</Typography>
                                 </Typography>
                             </>
                         )}

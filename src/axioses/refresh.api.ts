@@ -38,7 +38,7 @@ export const getAccessToken =
                 if (res) {
                     const {accessToken, refreshToken} = res.data
 
-                    setJwtTokens(accessToken, refreshToken)
+                    setJwtTokens({accessToken, refreshToken})
 
                     return res.data.accessToken
                 }

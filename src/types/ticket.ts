@@ -4,6 +4,5 @@ type Ticket = {
 }
 
 type TicketHumanRead = Omit<Ticket, 'hash'> & {
-    windowNumber: number
     createdAt: number
 }

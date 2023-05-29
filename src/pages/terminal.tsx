@@ -17,7 +17,7 @@ export default function TerminalPage() {
 
     const [isLoading, toggleIsLoading] = useState<boolean>(true)
 
-    const [ticket, setTicket] = useState<Ticket>(null)
+    const [ticket, setTicket] = useState<Ticket | null>(null)
 
     const switchOnLoader = useCallback(() => {
         toggleIsLoading(true)
@@ -25,9 +25,7 @@ export default function TerminalPage() {
 
     const setTicketQr = useCallback((ticket: Ticket) => {
         setTicket(ticket)
-
-        if (isLoading)
-            toggleIsLoading(false)
+        toggleIsLoading(false)
     }, [])
 
     useEffect(() => {
@@ -35,14 +33,12 @@ export default function TerminalPage() {
 
         try {
             void loadUserMeRequestApi()
-
         } catch (e) {
             responseStatusOK = false
         }
-
         if (responseStatusOK) {
             terminalSocketRef.current = new TerminalSocketService({toggleIsSocketClosed, setTicketQr, switchOnLoader})
-            terminalSocketRef.current?.init(getAccessTokenFromLocalStorage())
+            terminalSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
         }
     }, [])
 
@@ -74,7 +70,7 @@ export default function TerminalPage() {
                             <CircularProgress size={'100%'} sx={{padding: 5}} thickness={2.5} color="primary"/>
                         )}
                         {(isReady && !!ticket) && (
-                            <QRCodeSVG size={'100%'} value={getLinkWithTicketHash(ticket)}/>
+                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(ticket)}/>
                         )}
                     </Box>
                 </Grid>

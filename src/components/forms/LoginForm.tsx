@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {Box, Button, TextField} from "@mui/material"
+import {Box, TextField} from "@mui/material"
 
 import {useFormik} from 'formik'
 import * as yup from 'yup'
@@ -20,11 +20,11 @@ const loginRequest = (data: ILoginRequest) => {
 
 const validationSchema = yup.object({
     email: yup
-        .string('Введите вашу почту')
+        .string()
         .email('Вы неправильно ввели почту')
-        .required('Введите почту'),
+        .required('Введите вашу почту'),
     password: yup
-        .string('Введите пароль')
+        .string()
         .min(6, 'Пароль должен содержать 6 символов')
         .required('Введите пароль'),
 })
@@ -46,7 +46,7 @@ export const LoginForm = () => {
                 .then((r) => {
                     const {accessToken, refreshToken} = r.data
 
-                    setAuth(accessToken, refreshToken)
+                    return setAuth(accessToken, refreshToken)
                 })
                 .catch(e => {
                     if (e.response?.status == 422) {
@@ -58,8 +58,7 @@ export const LoginForm = () => {
                             password: 'Ошибка на сервере, попробуйте позже'
                         })
                     }
-                })
-                .finally(() => {
+
                     toggleIsFetching(false)
                 })
         },
@@ -89,7 +88,8 @@ export const LoginForm = () => {
                     error={!!formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password || ' '}
                 />
-                <FetchingButton variant='contained' color='primary' type="submit" isFetching={isFetching || isAuthFetching}
+                <FetchingButton variant='contained' color='primary' type="submit"
+                                isFetching={isFetching || isAuthFetching}
                                 fullWidth>Войти</FetchingButton>
             </form>
         </Box>

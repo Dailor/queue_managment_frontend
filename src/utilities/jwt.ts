@@ -1,5 +1,7 @@
 import {getUnixTime} from "./date"
-import {ACCEPT_TOKEN_KEY, REFRESH_TOKEN_KEY} from "@/constants";
+import {ACCEPT_TOKEN_KEY, REFRESH_TOKEN_KEY} from "@/constants"
+
+const LIFE_TIME_TO_UPDATE_MULTIPLIER = 0.5
 
 export interface IAuthTokenInfo {
     exp: number
@@ -7,13 +9,13 @@ export interface IAuthTokenInfo {
     login: string
 }
 
+type Tokens = { accessToken: string, refreshToken: string }
+
 export interface ISetAuth {
-    (accessToken: string, refreshToken: string): void
+    (accessToken: string, refreshToken: string): Promise<any>
 }
 
-const LIFE_TIME_TO_UPDATE_MULTIPLIER = 0.5
-
-export const setJwtTokens: ISetAuth = (accessToken, refreshToken) => {
+export const setJwtTokens: (tokens: Tokens) => void = ({accessToken, refreshToken}) => {
     void localStorage.setItem(ACCEPT_TOKEN_KEY, accessToken)
     void localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
 }

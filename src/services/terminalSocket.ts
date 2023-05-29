@@ -2,18 +2,23 @@ import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import TerminalEvents from "@/services/events/TerminalEvents"
 
+interface TerminalSocketServiceArgs {
+    setTicketQr: Function
+    switchOnLoader: Function
+    toggleIsSocketClosed: Function
+}
 
 class TerminalSocketService extends BaseSocketService {
     setTicketQr: Function
     switchOnLoader: Function
 
-    constructor({setTicketQr, switchOnLoader, toggleIsSocketClosed}) {
-        super(toggleIsSocketClosed)
+    constructor({setTicketQr, switchOnLoader, toggleIsSocketClosed}: TerminalSocketServiceArgs) {
+        super({toggleIsSocketClosed})
         this.setTicketQr = setTicketQr
         this.switchOnLoader = switchOnLoader
     }
 
-    init(token) {
+    init(token: string) {
         this.socket = new WebSocket(webSocketEndpoints.terminal() + `?token=${token}`)
 
         this.socket.onopen = () => {
@@ -22,7 +27,7 @@ class TerminalSocketService extends BaseSocketService {
             )
         }
 
-        this.socket.onclose = this.onSocketClose
+        this.socket.onclose = () => this.onSocketClose()
 
         this.socket.onmessage = (event) => {
             const data = this.parse(event.data)

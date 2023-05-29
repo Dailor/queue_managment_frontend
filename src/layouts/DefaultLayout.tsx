@@ -1,18 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {AppProps} from "next/app"
-import {useRouter} from "next/router"
+import {NextRouter, useRouter} from "next/router"
 import {useAuth} from "@/providers/AuthProvider"
 import {Box, CircularProgress, Toolbar} from "@mui/material"
-import Sidebar from "@/components/navigation/Sidebar"
-import Header from "@/components/navigation/Header";
-import Navigation from "@/components/navigation/Navigation";
+import Navigation from "@/components/navigation/Navigation"
 
-
+const checkRouteAndAccess = (router: NextRouter, routerPath: string, access: boolean) => {
+    return router.pathname.startsWith(routerPath) && !access
+}
 const DefaultLayout = ({Component, pageProps}: AppProps) => {
     const router = useRouter()
     const component = <Component {...pageProps} />
 
-    const {isAuthFetching, isAuth, isAdmin, isDashboard, isOperator, redirectToLogin} = useAuth()
+    const {isAuthFetching, isAuth, isAdmin, isDashboard, isTerminal, isOperator} = useAuth()
 
     const [isShowLoader, toggleIsShowLoader] = useState(true)
 
@@ -27,23 +27,29 @@ const DefaultLayout = ({Component, pageProps}: AppProps) => {
             if (isAuth) {
                 let isAllowed = true
 
-                if (router.pathname.startsWith("/admin") && !isAdmin) {
+                if (checkRouteAndAccess(router, '/admin', isAdmin)) {
                     isAllowed = false
-                } else if (router.pathname.startsWith("/director") && !isDashboard) {
+                } else if (checkRouteAndAccess(router, "/terminal", isTerminal)) {
                     isAllowed = false
-                } else if (router.pathname.startsWith("/operator") && !isOperator) {
+                } else if (checkRouteAndAccess(router, "/operator", isOperator)) {
+                    isAllowed = false
+                } else if (checkRouteAndAccess(router, "/dashboard", isOperator)) {
                     isAllowed = false
                 }
                 if (router.pathname.startsWith('/login') || !isAllowed) {
                     void router.push('/')
                 }
             } else {
-                if (!router.pathname.startsWith('/login'))
-                    void redirectToLogin()
+                if (!router.pathname.startsWith('/') &&
+                    !router.pathname.startsWith('/login') &&
+                    !router.pathname.startsWith('/scanner/') &&
+                    !router.pathname.startsWith('/ticket/')
+                )
+                    void router.push('/')
             }
             toggleOffLoader()
         }
-    }, [isAuth, isAuthFetching, isAdmin, isDashboard, isOperator, router, redirectToLogin])
+    }, [isAuth, isAuthFetching, isAdmin, isDashboard, isOperator, router])
 
     if (isShowLoader) {
         return (

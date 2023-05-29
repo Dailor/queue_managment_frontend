@@ -1,8 +1,8 @@
 export class BaseEndpointAPI {
     static preBase = '/api'
-    static base
+    static base: string
 
-    protected static getEndpoint(path) {
+    protected static getEndpoint(path: string) {
         return this.preBase + this.base + path
     }
 }
@@ -22,25 +22,25 @@ class CRUDEndpointsAPI extends BaseEndpointAPI {
         return this.getEndpoint('/')
     }
 
-    static edit = (id) => {
+    static edit = (id: string | number) => {
         return this.getEndpoint(`/${id}`)
     }
 }
 
 export class UsersEndpointsAPI extends CRUDEndpointsAPI {
-    static base = '/v1/users'
+    static base = '/users'
 }
 
 export class OperatorEndpointsAPI extends BaseEndpointAPI {
-    static base = '/v1/operator'
+    static base = '/operator'
 }
 
 export class DashboardEndpointsAPI extends BaseEndpointAPI {
-    static base = '/v1/dashboard'
+    static base = '/dashboard'
 }
 
-export class TicketEndpointsAPI {
+export class TicketEndpointsAPI extends BaseEndpointAPI {
     static base = '/ticket'
 
-    static scan = this.base + '/scanner'
+    static scan = this.getEndpoint('/scanner')
 }

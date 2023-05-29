@@ -3,16 +3,22 @@ import BaseSocketService from "@/utilities/socket"
 import TicketEvents from "@/services/events/TicketEvents"
 import OperatorEvents from "@/services/events/OperatorEvents"
 
+interface TicketSocketServiceArgs {
+    setTicketInformation: Function
+    setInFrontCount: Function
+    setIsCalled: Function
+    toggleIsSocketClosed: Function
+}
 
 class TicketSocketService extends BaseSocketService {
-    setTicketFull: Function
+    setTicketInformation: Function
     setInFrontCount: Function
     setIsCalled: Function
 
-    constructor({setTicketFull, setInFrontCount, setIsCalled, toggleIsSocketClosed}) {
+    constructor({setTicketInformation, setInFrontCount, setIsCalled, toggleIsSocketClosed}: TicketSocketServiceArgs) {
         super({toggleIsSocketClosed})
 
-        this.setTicketFull = setTicketFull
+        this.setTicketInformation = setTicketInformation
         this.setInFrontCount = setInFrontCount
         this.setIsCalled = setIsCalled
     }
@@ -34,11 +40,11 @@ class TicketSocketService extends BaseSocketService {
 
             switch (eventType) {
                 case TicketEvents.TICKET_LOAD:
-                    return this.setTicketFull(payload.ticket)
+                    return this.setTicketInformation({ticket: payload.ticket, windowNumber: payload.windowNumber})
                 case TicketEvents.POSITION_LOAD:
                     return this.setInFrontCount(payload.position - 1)
                 case OperatorEvents.CALL_NEXT:
-                    return this.setIsCalled({'windowNumber': payload.payload.windowNumber})
+                    return this.setIsCalled({'windowNumber': payload.windowNumber})
                 default:
                     break
             }

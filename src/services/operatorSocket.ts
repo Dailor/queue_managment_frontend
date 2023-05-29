@@ -2,19 +2,23 @@ import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import OperatorEvents from "@/services/events/OperatorEvents"
 
-
-class TerminalSocketService extends BaseSocketService {
+interface OperatorSocketServiceArgs {
+    setCountInQueue: Function
+    setCurrentNumber: Function
+    toggleIsSocketClosed: Function
+}
+class OperatorSocketService extends BaseSocketService {
     setCountInQueue: Function
     setCurrentNumber: Function
 
-    constructor({setCountInQueue, setCurrentNumber, toggleIsSocketClosed}) {
-        super(toggleIsSocketClosed)
+    constructor({setCountInQueue, setCurrentNumber, toggleIsSocketClosed}: OperatorSocketServiceArgs) {
+        super({toggleIsSocketClosed})
 
         this.setCountInQueue = setCountInQueue
         this.setCurrentNumber = setCurrentNumber
     }
 
-    init(token) {
+    init(token: string) {
         this.socket = new WebSocket(webSocketEndpoints.operator() + `?token=${token}`)
 
         this.socket.onopen = () => {
@@ -53,4 +57,4 @@ class TerminalSocketService extends BaseSocketService {
     }
 }
 
-export default TerminalSocketService
+export default OperatorSocketService

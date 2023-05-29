@@ -30,7 +30,7 @@ export default function OperatorPage() {
                 setCurrentNumber,
                 toggleIsSocketClosed
             })
-            operatorSocketRef.current?.init(getAccessTokenFromLocalStorage())
+            operatorSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
         }
     }, [])
 
@@ -41,7 +41,7 @@ export default function OperatorPage() {
     return (
         <>
             <Head>
-                <title>Вход</title>
+                <title>Оператор | {countInQueue}</title>
             </Head>
             <Container sx={{paddingTop: 3}}>
                 <Box sx={{marginBottom: 2}}>
@@ -56,7 +56,8 @@ export default function OperatorPage() {
                 </Box>
                 <Box>
                     <Typography variant='h5'>Сейчас вы обслуживаете номер:
-                        <Typography color='info' variant={'span'}> {currentNumber}</Typography></Typography>
+                        <Typography color='warning.main' variant={'span'}> {currentNumber}</Typography>
+                    </Typography>
                 </Box>
             </Container>
         </>

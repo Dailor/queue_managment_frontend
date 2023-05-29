@@ -48,11 +48,11 @@ export const AuthProvider = ({children}: Props) => {
         const accessToken = getAccessTokenFromLocalStorage()
 
         if (accessToken) {
-            loadUserMeRequestApi()
+            return loadUserMeRequestApi()
                 .then(r => {
                     setUser(r.data)
                 })
-                .catch(() => {
+                .catch(e => {
 
                 })
                 .finally(() => {
@@ -60,12 +60,14 @@ export const AuthProvider = ({children}: Props) => {
                 })
         } else {
             toggleIsAuthFetching(false)
+
+            return new Promise(() => {})
         }
     }, [])
 
     const setAuth: ISetAuth = (accessToken, refreshToken) => {
-        setJwtTokens(accessToken, refreshToken)
-        loadUser()
+        setJwtTokens({accessToken, refreshToken})
+        return loadUser()
     }
 
     const logout = useCallback(() => {

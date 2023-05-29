@@ -1,17 +1,13 @@
+import {getHost} from "@/constants"
+
 const getWebSocketProtocol = () => {
     return location.protocol.includes('https') ? 'wss://' : 'ws://'
 }
 
-const getWebSocketUrl = (path) => {
-    let host
+const getWebSocketUrl = (path: string) => {
+    const host = getHost()
 
-    if (process.env.DEBUG) {
-        host = 'localhost:8000'
-    } else {
-        host = location.host
-    }
-
-    return getWebSocketProtocol() + host + path + '/ws'
+    return getWebSocketProtocol() + host + '/api' + path + '/ws'
 }
 
 const webSocketEndpoints = {

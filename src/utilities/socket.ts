@@ -1,17 +1,22 @@
+type BaseSocketServiceArgs = {
+    toggleIsSocketClosed: Function
+}
+
 class BaseSocketService {
-    socket: WebSocket
+    socket: null | WebSocket
     toggleIsSocketClosed: Function
 
-    constructor({toggleIsSocketClosed}) {
+    constructor({toggleIsSocketClosed}: BaseSocketServiceArgs) {
+        this.socket = null
         this.toggleIsSocketClosed = toggleIsSocketClosed
     }
 
-    parse(obj) {
+    parse(obj: string) {
         return JSON.parse(obj)
     }
 
-    sendObject(obj) {
-        this.socket.send(JSON.stringify(obj))
+    sendObject(obj: object) {
+        this.socket?.send(JSON.stringify(obj))
     }
 
     onSocketClose() {
