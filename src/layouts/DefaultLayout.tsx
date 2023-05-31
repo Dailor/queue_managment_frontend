@@ -27,23 +27,20 @@ const DefaultLayout = ({Component, pageProps}: AppProps) => {
             if (isAuth) {
                 let isAllowed = true
 
-                if (checkRouteAndAccess(router, '/admin', isAdmin)) {
-                    isAllowed = false
-                } else if (checkRouteAndAccess(router, "/terminal", isTerminal)) {
-                    isAllowed = false
-                } else if (checkRouteAndAccess(router, "/operator", isOperator)) {
-                    isAllowed = false
-                } else if (checkRouteAndAccess(router, "/dashboard", isOperator)) {
+                if (!(checkRouteAndAccess(router, '/admin', isAdmin) ||
+                    checkRouteAndAccess(router, "/terminal", isTerminal) ||
+                    checkRouteAndAccess(router, "/operator", isOperator) ||
+                    checkRouteAndAccess(router, "/dashboard", isDashboard))) {
                     isAllowed = false
                 }
                 if (router.pathname.startsWith('/login') || !isAllowed) {
                     void router.push('/')
                 }
             } else {
-                if (!router.pathname.startsWith('/') &&
-                    !router.pathname.startsWith('/login') &&
-                    !router.pathname.startsWith('/scanner/') &&
-                    !router.pathname.startsWith('/ticket/')
+                if (!(router.pathname == '/' ||
+                    router.pathname.startsWith('/login') ||
+                    router.pathname.startsWith('/scanner/') ||
+                    router.pathname.startsWith('/ticket/'))
                 )
                     void router.push('/')
             }
@@ -53,7 +50,12 @@ const DefaultLayout = ({Component, pageProps}: AppProps) => {
 
     if (isShowLoader) {
         return (
-            <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Box sx={{
+                height: '100vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
                 <CircularProgress size={75}/>
             </Box>
         )
@@ -64,7 +66,10 @@ const DefaultLayout = ({Component, pageProps}: AppProps) => {
     }
 
     return (
-        <Box sx={{display: 'flex', alignItems: 'start', height: '100vh'}}>
+        <Box sx={{
+            display: 'flex', alignItems: 'start', height: '100vh',
+            bgcolor: 'background.default'
+        }}>
             <Navigation/>
             <Box
                 component="main"

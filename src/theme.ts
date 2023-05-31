@@ -6,7 +6,7 @@ declare module "@mui/material/Typography" {
     }
 }
 
-export const theme = createTheme({
+export const theme = {
     palette: {
         mode: 'light',
         primary: {
@@ -20,7 +20,7 @@ export const theme = createTheme({
         },
         info: {
             main: '#3E7DE2',
-        },
+        }
     },
     typography: {
         fontFamily: [
@@ -56,4 +56,4 @@ export const theme = createTheme({
             },
         },
     },
-})
+}

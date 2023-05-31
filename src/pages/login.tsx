@@ -3,7 +3,7 @@ import React, {useEffect} from 'react'
 import {css} from '@emotion/react'
 
 import Head from 'next/head'
-import {Box, Button, Grid, Typography} from "@mui/material"
+import {Box, Button, Grid, Typography, useTheme} from "@mui/material"
 import {FaMicrosoft} from "react-icons/fa"
 import Image from "next/image"
 
@@ -33,7 +33,7 @@ export default function LoginPage() {
                         <Image src={logo} alt="IITU Logo" width={211} height={32}/>
                     </Box>
                     <Box sx={{paddingX: 4}}>
-                        <Typography variant='h4' sx={{fontWeight: 600, marginBottom: 3}}>Admission Queue</Typography>
+                        <Typography variant='h4' sx={{fontWeight: 600, marginBottom: 6}}>Admission Queue</Typography>
                         <LoginForm/>
                     </Box>
                 </Grid>

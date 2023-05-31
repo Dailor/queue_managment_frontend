@@ -15,23 +15,15 @@ export default function OperatorPage() {
 
 
     useEffect(() => {
-        let responseStatusOK = true
-
-        try {
-            void loadUserMeRequestApi()
-
-        } catch (e) {
-            responseStatusOK = false
-        }
-
-        if (responseStatusOK) {
-            operatorSocketRef.current = new OperatorSocketService({
-                setCountInQueue,
-                setCurrentNumber,
-                toggleIsSocketClosed
+        loadUserMeRequestApi()
+            .then(() => {
+                operatorSocketRef.current = new OperatorSocketService({
+                    setCountInQueue,
+                    setCurrentNumber,
+                    toggleIsSocketClosed
+                })
+                operatorSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
             })
-            operatorSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
-        }
     }, [])
 
     const callNext = useCallback(() => {

@@ -96,7 +96,7 @@ export const AuthProvider = ({children}: Props) => {
     )
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null)
+const AuthContext = createContext<AuthContextType | null>(null)
 
 export function useAuth() {
     return useContext(AuthContext) as AuthContextType

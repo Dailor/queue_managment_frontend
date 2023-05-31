@@ -11,11 +11,12 @@ import '@fontsource/inter/800.css'
 import '@/styles/globals.css'
 import type {AppProps} from 'next/app'
 import {AuthProvider} from "@/providers/AuthProvider"
-import {CssBaseline, ThemeProvider} from "@mui/material"
+import {CssBaseline} from "@mui/material"
 import {theme} from "@/theme"
 import axios from "axios"
 import DefaultLayout from "@/layouts/DefaultLayout"
 import Head from 'next/head'
+import LocalThemeProvider from "@/providers/LocalThemeProvider"
 
 axios.defaults.baseURL = 'http://localhost:8000'
 
@@ -26,10 +27,10 @@ export default function App({Component, pageProps}: AppProps) {
                 <title>IITU |</title>
             </Head>
             <AuthProvider>
-                <ThemeProvider theme={theme}>
+                <LocalThemeProvider>
                     <CssBaseline/>
                     <DefaultLayout {...{Component, pageProps}}/>
-                </ThemeProvider>
+                </LocalThemeProvider>
             </AuthProvider>
         </>
     )

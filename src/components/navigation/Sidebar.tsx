@@ -23,8 +23,6 @@ interface SidebarProps {
 }
 
 const Sidebar = ({isSidebarOpen, toggleIsSidebarOpen}: SidebarProps) => {
-    const {isAdmin, isDashboard, isOperator} = useAuth()
-
     const router = useRouter()
 
     useEffect(() => {

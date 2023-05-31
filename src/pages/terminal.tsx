@@ -29,17 +29,11 @@ export default function TerminalPage() {
     }, [])
 
     useEffect(() => {
-        let responseStatusOK = true
-
-        try {
-            void loadUserMeRequestApi()
-        } catch (e) {
-            responseStatusOK = false
-        }
-        if (responseStatusOK) {
+        loadUserMeRequestApi().then(() => {
             terminalSocketRef.current = new TerminalSocketService({toggleIsSocketClosed, setTicketQr, switchOnLoader})
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
-        }
+        })
+
     }, [])
 
     const isReady = !(isLoading || isSocketClosed)

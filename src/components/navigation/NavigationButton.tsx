@@ -49,7 +49,8 @@ export const NavigationButton = (props: NavigationButtonDefaultProps) => {
 }
 
 export const NavigationButtonLogout = () => {
-    const {logout} = useAuth()
-
-    return <NavigationButton icon={<ExitToAppIcon/>} onClick={logout} text={'Выйти'}/>
+    const {isAuth, logout} = useAuth()
+    if (isAuth)
+        return <NavigationButton icon={<ExitToAppIcon/>} onClick={logout} text={'Выйти'}/>
+    return <></>
 }
