@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react"
 import {Button, ButtonProps} from "@mui/material"
 
-type CoolDownButtonProps = ButtonProps & {
+type CoolDownButtonProps = Omit<ButtonProps, 'onClick'> & {
     onClick: Function
     coolDownSeconds: number
 }

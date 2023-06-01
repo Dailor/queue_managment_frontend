@@ -44,12 +44,13 @@ export default function TicketPage() {
 
     const [isAlwaysConnAlertOpened, toggleIsAlwaysConnAlertOpened] = useState(true)
 
-    const setTicketInformation = ({ticket, windowNumber}: ISetTicketInformation,) => {
+    const setTicketInformation = useCallback(({ticket, windowNumber}: ISetTicketInformation,) => {
         if (windowNumber !== -1) {
             setIsCalled({windowNumber})
         }
         setTicketFull(ticket)
-    }
+    }, [])
+
     const setIsCalled = ({windowNumber}: ISetIsCalled) => {
         const audio = new Audio('/sounds/client_caller.mp3')
         audio.volume = 0.5
@@ -69,7 +70,7 @@ export default function TicketPage() {
         })
         ticketSocketRef.current?.init(ticketHash)
 
-    }, [router.query.ticketHash])
+    }, [router.query.ticketHash, setTicketInformation])
 
     const formattedDateTime = useMemo(() => {
         if (!ticketFull?.createdAt)

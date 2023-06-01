@@ -12,8 +12,12 @@ type ColorModeContextType = {
     setMode: (mode: ColorPaletteType) => void
 }
 
-export default function LocalThemeProvider({children}) {
-    const [mode, setMode] = React.useState<ColorPaletteType>(ThemeSetup.theme.palette.mode)
+interface LocalThemeProviderProps {
+    children: React.ReactNode
+}
+
+export default function LocalThemeProvider({children}: LocalThemeProviderProps) {
+    const [mode, setMode] = React.useState<ColorPaletteType>('light')
 
     const toggleColorMode = useCallback(() => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))

@@ -34,7 +34,7 @@ export default function TerminalPage() {
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
         })
 
-    }, [])
+    }, [setTicketQr, switchOnLoader])
 
     const isReady = !(isLoading || isSocketClosed)
 

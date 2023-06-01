@@ -8,7 +8,6 @@ declare module "@mui/material/Typography" {
 
 export const theme = {
     palette: {
-        mode: 'light',
         primary: {
             main: '#b1040e',
         },

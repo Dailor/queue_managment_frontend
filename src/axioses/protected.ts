@@ -1,6 +1,6 @@
-import axios, {AxiosError, CreateAxiosDefaults} from "axios"
+import axios, {AxiosError, AxiosHeaders, CreateAxiosDefaults} from "axios"
 import {BACKEND_URL} from "@/constants"
-import {getAccessToken} from "@/axioses/refresh.api"
+import {getAccessToken} from "@/axioses/refresh"
 import {AuthEndpointAPI} from "@/apiEndpoints"
 import {removeJwtTokens} from "@/utilities/jwt"
 
@@ -20,10 +20,7 @@ axiosProtected.interceptors.request.use(
         const accessToken = await getAccessToken()
 
         if (accessToken) {
-            config.headers = {
-                ...config.headers,
-                Authorization: `Bearer ${accessToken}`,
-            }
+            (config.headers as AxiosHeaders).set('Authorization', `Bearer ${accessToken}`)
         }
 
         return config

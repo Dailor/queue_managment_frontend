@@ -1,4 +1,12 @@
-export const BACKEND_URL = process.env.DEBUG ? 'http://localhost:8000' : 'http://queue.iitu.edu.kz'
+export const getHost = () => {
+    if (process.env.DEBUG) {
+        return 'localhost:8001'
+    } else {
+        return 'queue.iitu.edu.kz'
+    }
+}
+
+export const BACKEND_URL = process.env.DEBUG ? `http://${getHost()}` : `https://${getHost()}`
 
 export const ACCEPT_TOKEN_KEY = 'access-token'
 export const REFRESH_TOKEN_KEY = 'refresh-token'
@@ -20,11 +28,3 @@ export const roleToRoleName: RoleToRoleName = {
 }
 
 export const rolesToEnum = Object.keys(roleToRoleName).map((k) => [k, roleToRoleName[k]])
-
-export const getHost = () => {
-    if (process.env.DEBUG) {
-        return 'localhost:8000'
-    } else {
-        return location.host
-    }
-}

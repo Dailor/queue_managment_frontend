@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 
 import '@fontsource/inter/300.css'
@@ -12,15 +12,17 @@ import '@/styles/globals.css'
 import type {AppProps} from 'next/app'
 import {AuthProvider} from "@/providers/AuthProvider"
 import {CssBaseline} from "@mui/material"
-import {theme} from "@/theme"
 import axios from "axios"
 import DefaultLayout from "@/layouts/DefaultLayout"
 import Head from 'next/head'
 import LocalThemeProvider from "@/providers/LocalThemeProvider"
+import {BACKEND_URL} from "@/constants"
 
-axios.defaults.baseURL = 'http://localhost:8000'
 
-export default function App({Component, pageProps}: AppProps) {
+axios.defaults.baseURL = BACKEND_URL
+
+const App = ({Component, pageProps}: AppProps
+) => {
     return (
         <>
             <Head>
@@ -35,3 +37,5 @@ export default function App({Component, pageProps}: AppProps) {
         </>
     )
 }
+
+export default App

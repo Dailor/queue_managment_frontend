@@ -4,14 +4,14 @@ import {
     isTokenExpired,
     setJwtTokens
 } from "@/utilities/jwt"
-import axios, {AxiosPromise} from "axios"
+import axios, { AxiosResponse } from 'axios'
 import {AuthEndpointAPI} from "@/apiEndpoints"
 import {IRefreshResponse} from "@/types/auth"
 
 
-let refreshTokenRequest: axios.AxiosResponse<IRefreshResponse> | null = null
+let refreshTokenRequest: AxiosResponse<IRefreshResponse> | null = null
 
-type IRefreshTokensFunc = (refreshToken: string) => Promise<axios.AxiosResponse<IRefreshResponse>>
+type IRefreshTokensFunc = (refreshToken: string) => Promise<AxiosResponse<IRefreshResponse>>
 
 const refreshTokens: IRefreshTokensFunc = (refreshToken: string) => {
     return axios.post(AuthEndpointAPI.refresh, {refreshToken})

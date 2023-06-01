@@ -8,7 +8,13 @@ import Navigation from "@/components/navigation/Navigation"
 const checkRouteAndAccess = (router: NextRouter, routerPath: string, access: boolean) => {
     return router.pathname.startsWith(routerPath) && !access
 }
-const DefaultLayout = ({Component, pageProps}: AppProps) => {
+
+interface DefaultLayoutProps {
+    Component: AppProps['Component']
+    pageProps: AppProps['pageProps']
+}
+
+const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
     const router = useRouter()
     const component = <Component {...pageProps} />
 

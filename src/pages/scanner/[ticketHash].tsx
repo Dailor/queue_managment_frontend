@@ -1,6 +1,6 @@
 import Head from "next/head"
 import React, {useEffect, useState} from "react"
-import {useRouter} from "next/router"
+import Router, {useRouter} from "next/router"
 import {scanRequest} from "@/requests/ticket"
 import {getLocalUniqueID, setLocalUniqueID} from "@/utilities/uniqueDevice"
 import {Box, CircularProgress, Grid, Typography} from "@mui/material"
@@ -20,7 +20,7 @@ export default function Scanner() {
 
         scanRequest({ticketHash, uniqueId})
             .then(r => {
-                void router.push('/ticket/' + ticketHash)
+                void Router.push('/ticket/' + ticketHash)
             })
             .catch(e => {
                 if (e.response?.status == 400) {
@@ -32,7 +32,7 @@ export default function Scanner() {
             .finally(() => {
                 toggleIsLoading(false)
             })
-    }, [])
+    }, [router.query.ticketHash])
 
     return (
         <>

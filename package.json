@@ -1,5 +1,5 @@
 {
-  "name": "University Purchase Network",
+  "name": "AdmissionQueue",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,7 +20,7 @@
     "@types/node": "18.15.11",
     "@types/react": "18.0.31",
     "@types/react-dom": "18.0.11",
-    "axios": "^1.3.4",
+    "axios": "^1.4.0",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
     "formik": "^2.2.9",

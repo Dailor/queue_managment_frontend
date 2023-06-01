@@ -18,14 +18,14 @@ type DashboardRowProps = {
     createdAt?: number
 }
 
-const callNextVoiceSynthesis = (_window: number, _ticket: number) => {
+const callNextVoiceSynthesis = (windowNumber: number, ticketNumber: number) => {
     const synth = window.speechSynthesis
     const voices = synth.getVoices()
 
-    const utterance = new SpeechSynthesisUtterance(`Номер ${_ticket} подойдите к окну номер ${_window}`)
+    const utterance = new SpeechSynthesisUtterance(`Номер ${ticketNumber} подойдите к окну номер ${windowNumber}`)
     utterance.voice = voices[3]
 
-    utterance.volume = 0.5
+    utterance.volume = 1
     utterance.pitch = 1
     utterance.rate = 1.2
 
@@ -130,6 +130,7 @@ export default function DashboardPage() {
             type: 'ADD_NEW',
             payload: {window, ticket}
         })
+
         callNextVoiceSynthesis(window, ticket)
     }, [])
 
@@ -143,7 +144,7 @@ export default function DashboardPage() {
                 })
                 dashboardSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
             })
-    }, [])
+    }, [addNewOnDashboard])
 
     return (
         <>

@@ -3,7 +3,7 @@ import {TicketEndpointsAPI} from "@/apiEndpoints"
 
 interface IScanRequest {
     ticketHash: string
-    uniqueId: string
+    uniqueId: string | null
 }
 
 export const scanRequest = (data: IScanRequest) => {
