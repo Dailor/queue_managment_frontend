@@ -12,19 +12,19 @@ const CoolDownButton = ({children, coolDownSeconds, onClick, disabled, ...props}
     const coolDownTimerRefresher = useCallback(() => {
         setCoolDownLeft(coolDownSeconds)
 
-        const finishDate = new Date() / 1000 + coolDownSeconds
+        const finishDate = (new Date()).getTime() / 1000 + coolDownSeconds
 
         const intervalId = setInterval(() => {
-            const dSeconds = Math.max((finishDate - new Date() / 1000), 0)
+            const dSeconds = Math.max((finishDate - (new Date()).getTime() / 1000), 0)
 
             if (dSeconds < 1) {
-                clearInterval(intervalId)
                 setCoolDownLeft(null)
+                clearInterval(intervalId)
             }
 
             setCoolDownLeft(Math.floor(dSeconds))
         }, 500)
-    }, [])
+    }, [coolDownSeconds])
 
     const onClickWrapper = useCallback(() => {
         onClick()

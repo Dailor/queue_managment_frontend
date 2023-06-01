@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import {AppProps} from "next/app"
 import {NextRouter, useRouter} from "next/router"
 import {useAuth} from "@/providers/AuthProvider"
@@ -27,10 +27,10 @@ const DefaultLayout = ({Component, pageProps}: AppProps) => {
             if (isAuth) {
                 let isAllowed = true
 
-                if (!(checkRouteAndAccess(router, '/admin', isAdmin) ||
+                if (checkRouteAndAccess(router, '/admin', isAdmin) ||
                     checkRouteAndAccess(router, "/terminal", isTerminal) ||
                     checkRouteAndAccess(router, "/operator", isOperator) ||
-                    checkRouteAndAccess(router, "/dashboard", isDashboard))) {
+                    checkRouteAndAccess(router, "/dashboard", isDashboard)) {
                     isAllowed = false
                 }
                 if (router.pathname.startsWith('/login') || !isAllowed) {
@@ -46,7 +46,7 @@ const DefaultLayout = ({Component, pageProps}: AppProps) => {
             }
             toggleOffLoader()
         }
-    }, [isAuth, isAuthFetching, isAdmin, isDashboard, isOperator, router])
+    }, [router, isAuth, isAuthFetching, isAdmin, isDashboard, isOperator, isTerminal])
 
     if (isShowLoader) {
         return (
