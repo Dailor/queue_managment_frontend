@@ -1,6 +1,6 @@
 export const getHost = () => {
     if (process.env.DEBUG) {
-        return 'localhost:8001'
+        return 'localhost:8000'
     } else {
         return 'queue.iitu.edu.kz'
     }
