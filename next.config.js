@@ -3,7 +3,7 @@ const nextConfig = {
     output: 'standalone',
     reactStrictMode: false,
     env: {
-        DEBUG: false
+        DEBUG: true
     }
 }
 
