@@ -6,7 +6,7 @@ export const getHost = () => {
     }
 }
 
-export const BACKEND_URL = process.env.DEBUG ? `http://${getHost()}` : `http://${getHost()}`
+export const BACKEND_URL = process.env.DEBUG ? `http://${getHost()}` : `https://${getHost()}`
 
 export const ACCEPT_TOKEN_KEY = 'access-token'
 export const REFRESH_TOKEN_KEY = 'refresh-token'

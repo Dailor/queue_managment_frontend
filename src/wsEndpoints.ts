@@ -1,7 +1,7 @@
 import {getHost} from "@/constants"
 
 const getWebSocketProtocol = () => {
-    return location.protocol.includes('https') ? 'ws://' : 'ws://'
+    return location.protocol.includes('https') ? 'ws://' : 'wss://'
 }
 
 const getWebSocketUrl = (path: string) => {
