@@ -1,6 +1,7 @@
 import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import OperatorEvents from "@/services/events/OperatorEvents"
+import BasicQueueEvents from "@/services/events/BasicQueueEvents";
 
 interface OperatorSocketServiceArgs {
     setCountInQueue: Function
@@ -23,7 +24,7 @@ class OperatorSocketService extends BaseSocketService {
 
         this.socket.onopen = () => {
             this.sendObject(
-                {type: OperatorEvents.UPDATE_IN_QUEUE_COUNT}
+                {type: BasicQueueEvents.UPDATE_IN_QUEUE_COUNT}
             )
         }
 
@@ -40,7 +41,7 @@ class OperatorSocketService extends BaseSocketService {
             console.log(data)
 
             switch (eventType) {
-                case OperatorEvents.UPDATE_IN_QUEUE_COUNT:
+                case BasicQueueEvents.UPDATE_IN_QUEUE_COUNT:
                     return this.setCountInQueue(payload.count)
                 case OperatorEvents.SET_CURRENT:
                     return this.setCurrentNumber(payload.ticket.number)

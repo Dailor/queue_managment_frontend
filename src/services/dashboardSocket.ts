@@ -2,6 +2,7 @@ import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import OperatorEvents from "@/services/events/OperatorEvents"
 import DashboardEvents from "@/services/events/DashboardEvents"
+import BasicQueueEvents from "@/services/events/BasicQueueEvents";
 
 interface DashboardSocketServiceArgs {
     toggleIsSocketClosed: Function
@@ -41,10 +42,10 @@ class DashboardSocketService extends BaseSocketService {
             console.log(data)
 
             switch (eventType) {
+                case BasicQueueEvents.UPDATE_IN_QUEUE_COUNT:
+                    return this.setInQueueCount(payload.count)
                 case OperatorEvents.CALL_NEXT:
                     return this.addNewOnDashboard(payload.window, payload.ticket)
-                case DashboardEvents.UPDATE_IN_QUEUE_COUNT:
-                    return this.setInQueueCount(payload.count)
                 default:
                     break
             }
