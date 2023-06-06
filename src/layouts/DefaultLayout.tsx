@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {AppProps} from "next/app"
 import {NextRouter, useRouter} from "next/router"
 import {useAuth} from "@/providers/AuthProvider"
@@ -39,8 +39,18 @@ const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
                     checkRouteAndAccess(router, "/dashboard", isDashboard)) {
                     isAllowed = false
                 }
+
                 if (router.pathname.startsWith('/login') || !isAllowed) {
                     void router.push('/')
+                }
+                else if (router.pathname == '/') {
+                    if (isDashboard) {
+                        void router.push('/dashboard')
+                    } else if (isTerminal) {
+                        void router.push('/terminal')
+                    } else if (isOperator) {
+                        void router.push('/operator')
+                    }
                 }
             } else {
                 if (!(router.pathname == '/' ||

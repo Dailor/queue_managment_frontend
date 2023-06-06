@@ -12,6 +12,7 @@ interface IAuthState {
 
 export interface LocalUser {
     fullName: string
+    windowNumber: number
     role: number
 }
 

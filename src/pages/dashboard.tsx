@@ -65,12 +65,12 @@ const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) 
                 marginBottom: 3
             },
         }}>
-            <Box sx={{flexBasis: '60%', marginRight: 6, borderTop, borderRight, borderBottom, p: 1.2}}>
-                <Typography variant={typographyVariant}
-                            fontWeight={fontWeight}>{ticket}</Typography></Box>
-            <Box sx={{flexBasis: '40%', borderTop, borderBottom, borderLeft, p: 1.2}}>
+            <Box sx={{flexBasis: '30%', marginRight: 6, borderTop, borderRight, borderBottom, p: 1.2}}>
                 <Typography variant={typographyVariant}
                             fontWeight={fontWeight}>{window}</Typography></Box>
+            <Box sx={{flexBasis: '70%', borderTop, borderBottom, borderLeft, p: 1.2}}>
+                <Typography variant={typographyVariant}
+                            fontWeight={fontWeight}>{ticket}</Typography></Box>
         </Box>
     )
 }

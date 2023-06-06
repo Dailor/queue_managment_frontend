@@ -39,8 +39,6 @@ class DashboardSocketService extends BaseSocketService {
             const eventType = data.type
             const payload = data.payload
 
-            console.log(data)
-
             switch (eventType) {
                 case BasicQueueEvents.UPDATE_IN_QUEUE_COUNT:
                     return this.setInQueueCount(payload.count)

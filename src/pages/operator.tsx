@@ -5,8 +5,11 @@ import CoolDownButton from "@/components/CoolDownButton"
 import OperatorSocketService from "@/services/operatorSocket"
 import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
+import {useAuth} from "@/providers/AuthProvider"
 
 export default function OperatorPage() {
+    const {user} = useAuth()
+
     const [countInQueue, setCountInQueue] = useState<number>()
     const [currentNumber, setCurrentNumber] = useState<number>()
 
@@ -37,10 +40,10 @@ export default function OperatorPage() {
             </Head>
             <Container sx={{paddingTop: 3}}>
                 <Box sx={{marginBottom: 2}}>
-                    <Typography variant='h4' fontWeight='bold'>Оператор</Typography>
+                    <Typography variant='h4' fontWeight='bold'>Оператор: #{user?.windowNumber}</Typography>
                 </Box>
                 <Box sx={{marginBottom: 3}}>
-                    <CoolDownButton variant='contained' coolDownSeconds={20} onClick={callNext} sx={{px: 4}}>Позвать
+                    <CoolDownButton variant='contained' coolDownSeconds={60} onClick={callNext} sx={{px: 4}}>Позвать
                         Следующиего</CoolDownButton>
                 </Box>
                 <Box sx={{marginBottom: 2}}>
