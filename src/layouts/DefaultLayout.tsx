@@ -42,8 +42,7 @@ const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
 
                 if (router.pathname.startsWith('/login') || !isAllowed) {
                     void router.push('/')
-                }
-                else if (router.pathname == '/') {
+                } else if (router.pathname == '/') {
                     if (isDashboard) {
                         void router.push('/dashboard')
                     } else if (isTerminal) {
@@ -81,10 +80,12 @@ const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
         return component
     }
 
+    const bgColor = router.pathname.startsWith('/ticket') ? 'background.default' : '#F4F4F4'
+
     return (
         <Box sx={{
             display: 'flex', alignItems: 'start', height: '100vh',
-            bgcolor: 'background.default'
+            bgColor
         }}>
             <Navigation/>
             <Box

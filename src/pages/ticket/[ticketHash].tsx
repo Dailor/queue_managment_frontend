@@ -109,7 +109,7 @@ export default function TicketPage() {
             <Head>
                 <title>Талон | {ticketFull?.number}</title>
             </Head>
-            <Grid container sx={{justifyContent: 'center', paddingTop: '5vh'}}>
+            <Grid container sx={{height: '100%', justifyContent: 'center', paddingTop: '5vh'}}>
                 <Grid item xs={12} sm={8} md={5} lg={4}
                       sx={{
                           paddingTop: 4,
