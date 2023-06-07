@@ -1,7 +1,7 @@
 import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import OperatorEvents from "@/services/events/OperatorEvents"
-import BasicQueueEvents from "@/services/events/BasicQueueEvents";
+import BasicQueueEvents from "@/services/events/BasicQueueEvents"
 
 interface OperatorSocketServiceArgs {
     setCountInQueue: Function
