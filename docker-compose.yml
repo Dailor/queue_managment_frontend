@@ -17,4 +17,3 @@ services:
       - '127.0.0.1:3000:80'
     depends_on:
       - frontend
-    restart: unless-stopped
