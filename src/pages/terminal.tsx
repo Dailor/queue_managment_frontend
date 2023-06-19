@@ -17,24 +17,28 @@ export default function TerminalPage() {
 
     const [isLoading, toggleIsLoading] = useState<boolean>(true)
 
-    const [ticket, setTicket] = useState<Ticket | null>(null)
+    const [qr, setQr] = useState<Ticket | null>(null)
 
     const switchOnLoader = useCallback(() => {
         toggleIsLoading(true)
     }, [])
 
-    const setTicketQr = useCallback((ticket: Ticket) => {
-        setTicket(ticket)
+    const setQrWrapped = useCallback((ticket: Ticket) => {
+        setQr(ticket)
         toggleIsLoading(false)
     }, [])
 
     useEffect(() => {
         loadUserMeRequestApi().then(() => {
-            terminalSocketRef.current = new TerminalSocketService({toggleIsSocketClosed, setTicketQr, switchOnLoader})
+            terminalSocketRef.current = new TerminalSocketService({
+                toggleIsSocketClosed,
+                setQr: setQrWrapped,
+                switchOnLoader
+            })
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
         })
 
-    }, [setTicketQr, switchOnLoader])
+    }, [setQrWrapped, switchOnLoader])
 
     const isReady = !(isLoading || isSocketClosed)
 
@@ -63,8 +67,8 @@ export default function TerminalPage() {
                         {(!isReady) && (
                             <CircularProgress size={'100%'} sx={{padding: 5}} thickness={2.5} color="primary"/>
                         )}
-                        {(isReady && !!ticket) && (
-                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(ticket)}/>
+                        {(isReady && !!qr) && (
+                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(qr)}/>
                         )}
                     </Box>
                 </Grid>
@@ -73,9 +77,9 @@ export default function TerminalPage() {
                     <Typography variant={'h4'} sx={{color: 'warning.main'}}>Мені Сканерлеңіз!</Typography>
                     <Typography variant={'h4'} sx={{color: 'info.main'}}>Scan Me!</Typography>
                 </Grid>
-                {(process.env.DEBUG && !!ticket) && (
+                {(process.env.DEBUG && !!qr) && (
                     <Grid item xs={12} sx={{marginTop: 5, textAlign: 'center'}}>
-                        <a href={getLinkWithTicketHash(ticket)} target="_blank">Ссылка</a>
+                        <a href={getLinkWithTicketHash(qr)} target="_blank">Ссылка</a>
                     </Grid>
                 )}
             </Grid>
