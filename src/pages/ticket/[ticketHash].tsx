@@ -3,25 +3,9 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
 import {Alert, Box, Grid, Skeleton, Snackbar, Typography} from "@mui/material"
 import ReadyIcon from "@/components/icons/ReadyIcon"
 import {useRouter} from "next/router"
-import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import TicketSocketService from "@/services/ticketSocket"
-import {SkeletonProps} from "@mui/material/Skeleton/Skeleton"
+import {SkeletonPlaceHolderWrapper} from "@/components/SkeletonPlaceHolderWrapper"
 
-
-type SkeletonPlaceHolderWrapperProps = {
-    children: React.ReactNode,
-    skeletonProps: SkeletonProps
-    isReady: boolean
-}
-
-const SkeletonPlaceHolderWrapper = ({children, isReady, skeletonProps}: SkeletonPlaceHolderWrapperProps) => {
-    if (isReady) {
-        return (
-            <>{children}</>
-        )
-    }
-    return <Skeleton {...skeletonProps} />
-}
 
 interface ISetIsCalled {
     windowNumber: number

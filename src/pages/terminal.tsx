@@ -7,38 +7,39 @@ import {Box, CircularProgress, Grid, Typography} from "@mui/material"
 
 import {QRCodeSVG} from 'qrcode.react'
 
-const getLinkWithTicketHash = (ticket: Ticket) => {
-    return location.origin + '/scanner/' + ticket.hash
+const getLinkWithTicketHash = (token: string) => {
+    return location.origin + '/scanner/' + token
 }
 
 export default function TerminalPage() {
     const terminalSocketRef = useRef<TerminalSocketService>()
-    const [isSocketClosed, toggleIsSocketClosed] = useState()
+    const [isSocketClosed, toggleIsSocketClosed] = useState<boolean>()
 
     const [isLoading, toggleIsLoading] = useState<boolean>(true)
 
-    const [qr, setQr] = useState<Ticket | null>(null)
+    const [token, setToken] = useState<string>(null)
 
     const switchOnLoader = useCallback(() => {
         toggleIsLoading(true)
     }, [])
 
-    const setQrWrapped = useCallback((ticket: Ticket) => {
-        setQr(ticket)
+    const setTokenWrapped = useCallback((token: string) => {
+        setToken(token)
         toggleIsLoading(false)
+        toggleIsSocketClosed(false)
     }, [])
 
     useEffect(() => {
         loadUserMeRequestApi().then(() => {
             terminalSocketRef.current = new TerminalSocketService({
                 toggleIsSocketClosed,
-                setQr: setQrWrapped,
+                setToken: setTokenWrapped,
                 switchOnLoader
             })
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
         })
 
-    }, [setQrWrapped, switchOnLoader])
+    }, [setTokenWrapped, switchOnLoader])
 
     const isReady = !(isLoading || isSocketClosed)
 
@@ -67,8 +68,8 @@ export default function TerminalPage() {
                         {(!isReady) && (
                             <CircularProgress size={'100%'} sx={{padding: 5}} thickness={2.5} color="primary"/>
                         )}
-                        {(isReady && !!qr) && (
-                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(qr)}/>
+                        {(isReady && !!token) && (
+                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(token)}/>
                         )}
                     </Box>
                 </Grid>
@@ -77,9 +78,9 @@ export default function TerminalPage() {
                     <Typography variant={'h4'} sx={{color: 'warning.main'}}>Мені Сканерлеңіз!</Typography>
                     <Typography variant={'h4'} sx={{color: 'info.main'}}>Scan Me!</Typography>
                 </Grid>
-                {(process.env.DEBUG && !!qr) && (
+                {(process.env.DEBUG && !!token) && (
                     <Grid item xs={12} sx={{marginTop: 5, textAlign: 'center'}}>
-                        <a href={getLinkWithTicketHash(qr)} target="_blank">Ссылка</a>
+                        <a href={getLinkWithTicketHash(token)} target="_blank">Ссылка</a>
                     </Grid>
                 )}
             </Grid>

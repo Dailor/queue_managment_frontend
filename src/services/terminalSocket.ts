@@ -3,18 +3,18 @@ import BaseSocketService from "@/utilities/socket"
 import TerminalEvents from "@/services/events/TerminalEvents"
 
 interface TerminalSocketServiceArgs {
-    setQr: Function
+    setToken: Function
     switchOnLoader: Function
     toggleIsSocketClosed: Function
 }
 
 class TerminalSocketService extends BaseSocketService {
-    setQr: Function
+    setToken: Function
     switchOnLoader: Function
 
-    constructor({setQr, switchOnLoader, toggleIsSocketClosed}: TerminalSocketServiceArgs) {
+    constructor({setToken, switchOnLoader, toggleIsSocketClosed}: TerminalSocketServiceArgs) {
         super({toggleIsSocketClosed})
-        this.setQr = setQr
+        this.setToken = setToken
         this.switchOnLoader = switchOnLoader
     }
 
@@ -39,7 +39,7 @@ class TerminalSocketService extends BaseSocketService {
 
             switch (eventType) {
                 case TerminalEvents.QR_REFRESH:
-                    this.setQr(payload.qr)
+                    this.setToken(payload.token)
                     break
                 case TerminalEvents.SET_LOADER:
                     this.switchOnLoader()
