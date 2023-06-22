@@ -1,8 +1,8 @@
 import Head from "next/head"
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
-import {Alert, Box, Grid, Skeleton, Snackbar, Typography} from "@mui/material"
+import {Alert, Box, Button, CircularProgress, Grid, Skeleton, Snackbar, Typography} from "@mui/material"
 import ReadyIcon from "@/components/icons/ReadyIcon"
-import {useRouter} from "next/router"
+import Router, {useRouter} from "next/router"
 import TicketSocketService from "@/services/ticketSocket"
 import {SkeletonPlaceHolderWrapper} from "@/components/SkeletonPlaceHolderWrapper"
 
@@ -16,11 +16,59 @@ interface ISetTicketInformation {
     windowNumber: number
 }
 
+function TicketErrorPage({errorCode, ...props}) {
+    const router = useRouter()
+
+    const errorMsg = useMemo(() => {
+        switch (errorCode) {
+            case 1:
+                return 'Талону не назначен номер. Нажмите на кнопку ниже'
+            default:
+                return 'Ошибка при загрузке талона'
+        }
+    }, [errorCode])
+
+    const redirectToBook = () => {
+        const token = router.query.token as string
+
+        void Router.push('/book/' + token)
+    }
+
+    return (
+        <>
+            <Head>
+                <title>Талон | Ошибка</title>
+            </Head>
+            <Grid container sx={{
+                justifyContent: 'center',
+                paddingTop: 8,
+            }}>
+                <Grid item xs={12} sx={{marginBottom: 2}}>
+                    <Typography variant={'h3'} sx={{marginBottom: 4, textAlign: 'center', fontWeight: '600'}}>Онлайн
+                        очередь</Typography>
+                </Grid>
+                <Grid item xs={12} sx={{textAlign: 'center'}}>
+                    <Box sx={{mb: 3}}>
+                        <Typography color='primary' variant={'h5'}>{errorMsg}</Typography>
+                    </Box>
+                    {(errorCode === 1) && (
+                        <Box>
+                            <Button variant='contained' onClick={redirectToBook} size='large'>Обновить</Button>
+                        </Box>
+                    )}
+                </Grid>
+            </Grid>
+        </>
+    )
+}
+
 export default function TicketPage() {
     const router = useRouter()
     const ticketSocketRef = useRef<TicketSocketService>()
 
     const [isSocketClosed, toggleIsSocketClosed] = useState()
+    const [errorCode, setErrorCode] = useState<number>()
+
 
     const [ticketFull, setTicketFull] = useState<TicketHumanRead>()
     const [windowNumber, setWindowNumber] = useState<number>(-1)
@@ -44,17 +92,18 @@ export default function TicketPage() {
     }
 
     useEffect(() => {
-        const ticketHash = router.query.ticketHash as string
+        const token = router.query.token as string
 
         ticketSocketRef.current = new TicketSocketService({
             setTicketInformation,
             setInFrontCount,
             setIsCalled,
-            toggleIsSocketClosed
+            toggleIsSocketClosed,
+            setErrorCode
         })
-        ticketSocketRef.current?.init(ticketHash)
+        ticketSocketRef.current?.init(token)
 
-    }, [router.query.ticketHash, setTicketInformation])
+    }, [router.query.token, setTicketInformation])
 
     const formattedDateTime = useMemo(() => {
         if (!ticketFull?.createdAt)
@@ -87,6 +136,12 @@ export default function TicketPage() {
 
     const isWindowNumberNotSet = windowNumber === -1
     const isLoaded = !!ticketFull && inFrontCount !== null
+
+    if (errorCode !== undefined) {
+        return (
+            <TicketErrorPage errorCode={errorCode}/>
+        )
+    }
 
     return (
         <>
@@ -127,13 +182,14 @@ export default function TicketPage() {
                             isReady={isLoaded}
                             skeletonProps={{
                                 variant: 'text', sx: {
-                                    fontSize: 24,
-                                    width: 250
+                                    fontSize: 26,
+                                    width: 280
                                 }
                             }}>
-                            <Typography sx={{fontSize: 24, fontWeight: '700'}}>Номер вашего талона</Typography>
+                            <Typography sx={{fontSize: 26, fontWeight: '700'}}>{ticketFull?.queue.name}</Typography>
                         </SkeletonPlaceHolderWrapper>
                     </Box>
+
                     <Box sx={{display: 'flex', justifyContent: 'center', marginBottom: 5}}>
                         <SkeletonPlaceHolderWrapper
                             isReady={isLoaded}
@@ -145,6 +201,18 @@ export default function TicketPage() {
                             }}
                         >
                             <Typography sx={{fontSize: 90, fontWeight: '700'}}>{ticketFull?.number}</Typography>
+                        </SkeletonPlaceHolderWrapper>
+                    </Box>
+                    <Box sx={{display: 'flex', justifyContent: 'center', marginBottom: 0.5}}>
+                        <SkeletonPlaceHolderWrapper
+                            isReady={isLoaded}
+                            skeletonProps={{
+                                variant: 'text', sx: {
+                                    fontSize: 24,
+                                    width: 250
+                                }
+                            }}>
+                            <Typography sx={{fontSize: 24, fontWeight: '700'}}>Номер вашего талона</Typography>
                         </SkeletonPlaceHolderWrapper>
                     </Box>
                     <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 6}}>

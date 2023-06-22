@@ -2,29 +2,33 @@ import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import TicketEvents from "@/services/events/TicketEvents"
 import OperatorEvents from "@/services/events/OperatorEvents"
+import BasicEvents from "@/services/events/BasicEvents";
 
 interface TicketSocketServiceArgs {
     setTicketInformation: Function
     setInFrontCount: Function
     setIsCalled: Function
     toggleIsSocketClosed: Function
+    setErrorCode: Function
 }
 
 class TicketSocketService extends BaseSocketService {
     setTicketInformation: Function
     setInFrontCount: Function
     setIsCalled: Function
+    setErrorCode: Function
 
-    constructor({setTicketInformation, setInFrontCount, setIsCalled, toggleIsSocketClosed}: TicketSocketServiceArgs) {
+    constructor({setTicketInformation, setInFrontCount, setIsCalled, toggleIsSocketClosed, setErrorCode}: TicketSocketServiceArgs) {
         super({toggleIsSocketClosed})
 
         this.setTicketInformation = setTicketInformation
         this.setInFrontCount = setInFrontCount
         this.setIsCalled = setIsCalled
+        this.setErrorCode = setErrorCode
     }
 
-    init(ticketHash: string) {
-        this.socket = new WebSocket(webSocketEndpoints.ticket() + `?ticket_hash=${ticketHash}`)
+    init(token: string) {
+        this.socket = new WebSocket(webSocketEndpoints.ticket() + `?token=${token}`)
 
         this.socket.onopen = () => {
             this.sendObject({
@@ -45,6 +49,8 @@ class TicketSocketService extends BaseSocketService {
                     return this.setInFrontCount(payload.position - 1)
                 case OperatorEvents.CALL_NEXT:
                     return this.setIsCalled({'windowNumber': payload.windowNumber})
+                case BasicEvents.ERROR:
+                    return this.setErrorCode(payload.error.code)
                 default:
                     break
             }
