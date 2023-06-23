@@ -3,3 +3,7 @@ type Queue = {
     name: string
     previousQueueId: number
 }
+
+type QueueCount = Omit<Queue, 'previousQueueId'> & {
+    count: number
+}

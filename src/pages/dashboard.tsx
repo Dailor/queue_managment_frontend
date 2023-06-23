@@ -19,17 +19,9 @@ type DashboardRowProps = {
 }
 
 const callNextVoiceSynthesis = (windowNumber: number, ticketNumber: number) => {
-    const synth = window.speechSynthesis
-    const voices = synth.getVoices()
-
-    const utterance = new SpeechSynthesisUtterance(`Номер ${ticketNumber} подойдите к окну номер ${windowNumber}`)
-    utterance.voice = voices[3]
-
-    utterance.volume = 1
-    utterance.pitch = 1
-    utterance.rate = 1.2
-
-    speechSynthesis.speak(utterance)
+    const audio = new Audio('/sounds/client_caller.mp3')
+    audio.volume = 0.5
+    audio.play()
 }
 const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) => {
     const typographyVariant = isHeader ? 'h2' : 'h3'

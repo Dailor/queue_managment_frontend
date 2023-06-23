@@ -4,18 +4,18 @@ import OperatorEvents from "@/services/events/OperatorEvents"
 import BasicQueueEvents from "@/services/events/BasicQueueEvents";
 
 interface OperatorSocketServiceArgs {
-    setCountInQueue: Function
+    setQueues: Function
     setCurrentNumber: Function
     toggleIsSocketClosed: Function
 }
 class OperatorSocketService extends BaseSocketService {
-    setCountInQueue: Function
+    setQueues: Function
     setCurrentNumber: Function
 
-    constructor({setCountInQueue, setCurrentNumber, toggleIsSocketClosed}: OperatorSocketServiceArgs) {
+    constructor({setQueues, setCurrentNumber, toggleIsSocketClosed}: OperatorSocketServiceArgs) {
         super({toggleIsSocketClosed})
 
-        this.setCountInQueue = setCountInQueue
+        this.setQueues = setQueues
         this.setCurrentNumber = setCurrentNumber
     }
 
@@ -24,7 +24,7 @@ class OperatorSocketService extends BaseSocketService {
 
         this.socket.onopen = () => {
             this.sendObject(
-                {type: BasicQueueEvents.UPDATE_IN_QUEUE_COUNT}
+                {type: BasicQueueEvents.BASIC_QUEUES_INFO}
             )
         }
 
@@ -41,8 +41,8 @@ class OperatorSocketService extends BaseSocketService {
             console.log(data)
 
             switch (eventType) {
-                case BasicQueueEvents.UPDATE_IN_QUEUE_COUNT:
-                    return this.setCountInQueue(payload.count)
+                case BasicQueueEvents.BASIC_QUEUES_INFO:
+                    return this.setQueues(payload.queues)
                 case OperatorEvents.SET_CURRENT:
                     return this.setCurrentNumber(payload.ticket.number)
                 default:

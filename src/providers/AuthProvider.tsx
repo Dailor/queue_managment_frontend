@@ -12,8 +12,10 @@ interface IAuthState {
 
 export interface LocalUser {
     fullName: string
-    windowNumber: number
     role: number
+    operator?: {
+        windowNumber: number
+    }
 }
 
 interface AuthContextType extends IAuthState {
@@ -62,7 +64,8 @@ export const AuthProvider = ({children}: Props) => {
         } else {
             toggleIsAuthFetching(false)
 
-            return new Promise(() => {})
+            return new Promise(() => {
+            })
         }
     }, [])
 
