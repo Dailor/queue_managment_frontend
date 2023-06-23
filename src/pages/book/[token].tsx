@@ -18,7 +18,7 @@ export default function Book() {
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [queuesList, setQueuesList] = useState<Queue[]>([])
 
-    const [queueSelectedId, setQueueSelectedId] = useState<Queue['id']>(null)
+    const [queueSelectedId, setQueueSelectedId] = useState<Queue['id'] | null>(null)
     const [error, setError] = useState<string>()
 
     const [isFetching, setIsFetching] = useState<boolean>(false)
@@ -27,8 +27,8 @@ export default function Book() {
         return !!queueSelectedId
     }
 
-    const onChange = (e) => {
-        setError(null)
+    const onChange = (e: CustomSyntheticEvent) => {
+        setError(undefined)
         setQueueSelectedId(e.target.value)
     }
 
@@ -43,7 +43,7 @@ export default function Book() {
 
         bookQueueRequest({
             uniqueId: getLocalUniqueID(),
-            queueId: queueSelectedId,
+            queueId: queueSelectedId as number,
             token
         })
             .then(() => {

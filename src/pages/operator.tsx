@@ -7,9 +7,7 @@ import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
 import {useAuth} from "@/providers/AuthProvider"
 
-
-function OperatorErrorPage({errorCode, ...props}) {
-
+function OperatorErrorPage() {
     return (
         <>
             <Head>

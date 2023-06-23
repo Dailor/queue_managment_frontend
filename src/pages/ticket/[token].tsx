@@ -16,7 +16,11 @@ interface ISetTicketInformation {
     windowNumber: number
 }
 
-function TicketErrorPage({errorCode, ...props}) {
+interface TicketErrorPageProps {
+    errorCode: number
+}
+
+function TicketErrorPage({errorCode}: TicketErrorPageProps) {
     const router = useRouter()
 
     const errorMsg = useMemo(() => {

@@ -2,7 +2,7 @@ import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import OperatorEvents from "@/services/events/OperatorEvents"
 import DashboardEvents from "@/services/events/DashboardEvents"
-import BasicQueueEvents from "@/services/events/BasicQueueEvents";
+import BasicQueueEvents from "@/services/events/BasicQueueEvents"
 
 interface DashboardSocketServiceArgs {
     toggleIsSocketClosed: Function

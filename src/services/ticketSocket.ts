@@ -2,7 +2,7 @@ import webSocketEndpoints from "@/wsEndpoints"
 import BaseSocketService from "@/utilities/socket"
 import TicketEvents from "@/services/events/TicketEvents"
 import OperatorEvents from "@/services/events/OperatorEvents"
-import BasicEvents from "@/services/events/BasicEvents";
+import BasicEvents from "@/services/events/BasicEvents"
 
 interface TicketSocketServiceArgs {
     setTicketInformation: Function

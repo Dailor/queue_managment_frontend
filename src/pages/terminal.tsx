@@ -17,7 +17,7 @@ export default function TerminalPage() {
 
     const [isLoading, toggleIsLoading] = useState<boolean>(true)
 
-    const [token, setToken] = useState<string>(null)
+    const [token, setToken] = useState<string>()
 
     const switchOnLoader = useCallback(() => {
         toggleIsLoading(true)
