@@ -55,6 +55,7 @@ const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
                 if (!(router.pathname == '/' ||
                     router.pathname.startsWith('/login') ||
                     router.pathname.startsWith('/scanner/') ||
+                    router.pathname.startsWith('/book/') ||
                     router.pathname.startsWith('/ticket/'))
                 )
                     void router.push('/')
