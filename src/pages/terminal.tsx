@@ -6,42 +6,50 @@ import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
 import {Box, CircularProgress, Grid, Typography} from "@mui/material"
 
 import {QRCodeSVG} from 'qrcode.react'
+import {useAuth} from "@/providers/AuthProvider"
 
-const getLinkWithTicketHash = (ticket: Ticket) => {
-    return location.origin + '/scanner/' + ticket.hash
+const getLinkWithTicketHash = (token: string) => {
+    return location.origin + '/scanner/' + token
 }
 
 export default function TerminalPage() {
+    const {user} = useAuth()
+
     const terminalSocketRef = useRef<TerminalSocketService>()
-    const [isSocketClosed, toggleIsSocketClosed] = useState()
+    const [isSocketClosed, toggleIsSocketClosed] = useState<boolean>()
 
     const [isLoading, toggleIsLoading] = useState<boolean>(true)
 
-    const [ticket, setTicket] = useState<Ticket | null>(null)
+    const [token, setToken] = useState<string>()
 
     const switchOnLoader = useCallback(() => {
         toggleIsLoading(true)
     }, [])
 
-    const setTicketQr = useCallback((ticket: Ticket) => {
-        setTicket(ticket)
+    const setTokenWrapped = useCallback((token: string) => {
+        setToken(token)
         toggleIsLoading(false)
+        toggleIsSocketClosed(false)
     }, [])
 
     useEffect(() => {
         loadUserMeRequestApi().then(() => {
-            terminalSocketRef.current = new TerminalSocketService({toggleIsSocketClosed, setTicketQr, switchOnLoader})
+            terminalSocketRef.current = new TerminalSocketService({
+                toggleIsSocketClosed,
+                setToken: setTokenWrapped,
+                switchOnLoader
+            })
             terminalSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
         })
 
-    }, [setTicketQr, switchOnLoader])
+    }, [setTokenWrapped, switchOnLoader])
 
     const isReady = !(isLoading || isSocketClosed)
 
     return (
         <>
             <Head>
-                <title>Терминал</title>
+                <title>Терминал | {user?.id}</title>
             </Head>
             <Grid container sx={{
                 justifyContent: 'center',
@@ -63,8 +71,8 @@ export default function TerminalPage() {
                         {(!isReady) && (
                             <CircularProgress size={'100%'} sx={{padding: 5}} thickness={2.5} color="primary"/>
                         )}
-                        {(isReady && !!ticket) && (
-                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(ticket)}/>
+                        {(isReady && !!token) && (
+                            <QRCodeSVG style={{width: '100%', height: '100%'}} value={getLinkWithTicketHash(token)}/>
                         )}
                     </Box>
                 </Grid>
@@ -73,9 +81,9 @@ export default function TerminalPage() {
                     <Typography variant={'h4'} sx={{color: 'warning.main'}}>Мені Сканерлеңіз!</Typography>
                     <Typography variant={'h4'} sx={{color: 'info.main'}}>Scan Me!</Typography>
                 </Grid>
-                {(process.env.DEBUG && !!ticket) && (
+                {(process.env.DEBUG && !!token) && (
                     <Grid item xs={12} sx={{marginTop: 5, textAlign: 'center'}}>
-                        <a href={getLinkWithTicketHash(ticket)} target="_blank">Ссылка</a>
+                        <a href={getLinkWithTicketHash(token)} target="_blank">Ссылка</a>
                     </Grid>
                 )}
             </Grid>

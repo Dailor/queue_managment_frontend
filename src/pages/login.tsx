@@ -33,7 +33,7 @@ export default function LoginPage() {
                         <Image src={logo} alt="IITU Logo" width={211} height={32}/>
                     </Box>
                     <Box sx={{paddingX: 4}}>
-                        <Typography variant='h4' sx={{fontWeight: 600, marginBottom: 6}}>Admission Queue</Typography>
+                        <Typography variant='h4' sx={{fontWeight: 600, marginBottom: 3}}>Admission Queue</Typography>
                         <LoginForm/>
                     </Box>
                 </Grid>

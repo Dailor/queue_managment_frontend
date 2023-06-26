@@ -4,5 +4,8 @@ type Ticket = {
 }
 
 type TicketHumanRead = Omit<Ticket, 'hash'> & {
+    queue: {
+        name: string
+    }
     createdAt: number
 }

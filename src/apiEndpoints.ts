@@ -43,4 +43,10 @@ export class TicketEndpointsAPI extends BaseEndpointAPI {
     static base = '/ticket'
 
     static scan = this.getEndpoint('/scanner')
+
+    static book = this.getEndpoint('/book')
+}
+
+export class QueueEndpointAPI extends CRUDEndpointsAPI {
+    static base = '/v1/queue'
 }

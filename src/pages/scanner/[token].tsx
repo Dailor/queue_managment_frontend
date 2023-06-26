@@ -12,15 +12,13 @@ export default function Scanner() {
     const [error, setError] = useState<string>()
 
     useEffect(() => {
-        setLocalUniqueID()
-
-        const ticketHash = router.query.ticketHash as string
+        const token = router.query.token as string
         const uniqueId = getLocalUniqueID()
 
 
-        scanRequest({ticketHash, uniqueId})
+        scanRequest({token, uniqueId})
             .then(r => {
-                void Router.push('/ticket/' + ticketHash)
+                void Router.push('/book/' + token)
             })
             .catch(e => {
                 if (e.response?.status == 400) {
@@ -32,7 +30,7 @@ export default function Scanner() {
             .finally(() => {
                 toggleIsLoading(false)
             })
-    }, [router.query.ticketHash])
+    }, [router.query.token])
 
     return (
         <>

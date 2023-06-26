@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react"
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
 import Head from "next/head"
 import {Box, Button, Container, Grid, Typography} from "@mui/material"
 import CoolDownButton from "@/components/CoolDownButton"
@@ -7,10 +7,35 @@ import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
 import {useAuth} from "@/providers/AuthProvider"
 
+function OperatorErrorPage() {
+    return (
+        <>
+            <Head>
+                <title>Талон | Ошибка</title>
+            </Head>
+            <Grid container sx={{
+                justifyContent: 'center',
+                paddingTop: 8,
+            }}>
+                <Grid item xs={12} sx={{marginBottom: 2}}>
+                    <Typography variant={'h3'} sx={{marginBottom: 4, textAlign: 'center', fontWeight: '600'}}>Онлайн
+                        очередь</Typography>
+                </Grid>
+                <Grid item xs={12} sx={{textAlign: 'center'}}>
+                    <Box sx={{mb: 3}}>
+                        <Typography color='primary' variant={'h5'}>У вас нет роли
+                            оператора. Обратитесь к администратору!</Typography>
+                    </Box>
+                </Grid>
+            </Grid>
+        </>
+    )
+}
+
 export default function OperatorPage() {
     const {user} = useAuth()
 
-    const [countInQueue, setCountInQueue] = useState<number>()
+    const [queues, setQueues] = useState<QueueCount[]>([])
     const [currentNumber, setCurrentNumber] = useState<number>()
 
     const operatorSocketRef = useRef<OperatorSocketService>()
@@ -21,7 +46,7 @@ export default function OperatorPage() {
         loadUserMeRequestApi()
             .then(() => {
                 operatorSocketRef.current = new OperatorSocketService({
-                    setCountInQueue,
+                    setQueues,
                     setCurrentNumber,
                     toggleIsSocketClosed
                 })
@@ -33,21 +58,40 @@ export default function OperatorPage() {
         operatorSocketRef.current?.callNext()
     }, [operatorSocketRef])
 
+
+    if (!user?.operator) {
+        return <OperatorErrorPage/>
+    }
+
     return (
         <>
             <Head>
-                <title>Оператор | {countInQueue}</title>
+                <title>Оператор</title>
             </Head>
             <Container sx={{paddingTop: 3}}>
                 <Box sx={{marginBottom: 2}}>
-                    <Typography variant='h4' fontWeight='bold'>Оператор: #{user?.windowNumber}</Typography>
+                    <Typography variant='h4' fontWeight='bold'>Оператор: #{user?.operator.windowNumber}</Typography>
+                </Box>
+                <Box sx={{marginBottom: 2}}>
+                    <Typography variant='h6' fontWeight='bold' color={'red'}>
+                        {isSocketClosed && 'Соединение с сервером прервалось! Обновите страницу'}
+                    </Typography>
                 </Box>
                 <Box sx={{marginBottom: 3}}>
                     <CoolDownButton variant='contained' coolDownSeconds={60} onClick={callNext} sx={{px: 4}}>Позвать
                         Следующиего</CoolDownButton>
                 </Box>
-                <Box sx={{marginBottom: 2}}>
-                    <Typography variant='h4'>В очереди: {countInQueue}</Typography>
+                <Box sx={{marginBottom: 2, display: 'flex', flexWrap: 'wrap'}}>
+                    <Box sx={{marginRight: 3}}>
+                        <Typography variant='h4' color='warning.main'>В очереди</Typography>
+                    </Box>
+                    <Box>
+                        {queues.map((queue) => (
+                            <Box key={queue.id}>
+                                <Typography variant='h4'>{queue.name}: {queue.count}</Typography>
+                            </Box>
+                        ))}
+                    </Box>
                 </Box>
                 <Box>
                     <Typography variant='h5'>Сейчас вы обслуживаете номер:
