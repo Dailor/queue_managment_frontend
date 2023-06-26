@@ -1,8 +1,8 @@
-import React, {createContext, useCallback, useContext, useEffect, useReducer, useState} from 'react'
+import React, {createContext, useCallback, useContext, useEffect, useState} from 'react'
 import {UserRolesEnum} from "@/constants"
 import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import {getAccessTokenFromLocalStorage, ISetAuth, removeJwtTokens, setJwtTokens} from "@/utilities/jwt"
-import {useRouter} from "next/router"
+import Router, {useRouter} from "next/router"
 
 interface IAuthState {
     user: LocalUser | null
@@ -11,6 +11,8 @@ interface IAuthState {
 }
 
 export interface LocalUser {
+    id: number
+
     fullName: string
     role: number
     operator?: {
@@ -77,6 +79,7 @@ export const AuthProvider = ({children}: Props) => {
     const logout = useCallback(() => {
         removeJwtTokens()
         setUser(null)
+        void Router.push('/login')
     }, [])
 
     useEffect(() => {

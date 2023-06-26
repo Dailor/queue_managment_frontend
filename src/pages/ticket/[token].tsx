@@ -60,6 +60,12 @@ function TicketErrorPage({errorCode}: TicketErrorPageProps) {
                             <Button variant='contained' onClick={redirectToBook} size='large'>Обновить</Button>
                         </Box>
                     )}
+                    {(errorCode === -1) && (
+                        <Box style={{color: 'red'}}>
+                            <div>Соединение с сервером оборвалось!</div>
+                            <div>Обновите страницу!</div>
+                        </Box>
+                    )}
                 </Grid>
             </Grid>
         </>
@@ -70,7 +76,7 @@ export default function TicketPage() {
     const router = useRouter()
     const ticketSocketRef = useRef<TicketSocketService>()
 
-    const [isSocketClosed, toggleIsSocketClosed] = useState()
+    const [isSocketClosed, toggleIsSocketClosed] = useState<boolean>()
     const [errorCode, setErrorCode] = useState<number>()
 
 
@@ -102,12 +108,17 @@ export default function TicketPage() {
             setTicketInformation,
             setInFrontCount,
             setIsCalled,
-            toggleIsSocketClosed,
+            toggleIsSocketClosed: wrappedToggleSocketConnectionClose,
             setErrorCode
         })
         ticketSocketRef.current?.init(token)
 
     }, [router.query.token, setTicketInformation])
+
+    const wrappedToggleSocketConnectionClose = (value: boolean) => {
+        setErrorCode(-1)
+        toggleIsSocketClosed(value)
+    }
 
     const formattedDateTime = useMemo(() => {
         if (!ticketFull?.createdAt)
@@ -294,8 +305,12 @@ export default function TicketPage() {
                 anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
                 open={isAlwaysConnAlertOpened && isLoaded}>
                 <Alert severity="error" onClose={() => toggleIsAlwaysConnAlertOpened(false)}>
-                    <div>Не нужно обновлять страницу!</div>
-                    <div>Страница держит постоянное соединение с сервером!</div>
+                    {!isSocketClosed && (
+                        <div>
+                            <div>Не нужно обновлять страницу!</div>
+                            <div>Страница держит постоянное соединение с сервером!</div>
+                        </div>
+                    )}
                 </Alert>
             </Snackbar>
         </>

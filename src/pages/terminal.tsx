@@ -6,12 +6,15 @@ import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
 import {Box, CircularProgress, Grid, Typography} from "@mui/material"
 
 import {QRCodeSVG} from 'qrcode.react'
+import {useAuth} from "@/providers/AuthProvider"
 
 const getLinkWithTicketHash = (token: string) => {
     return location.origin + '/scanner/' + token
 }
 
 export default function TerminalPage() {
+    const {user} = useAuth()
+
     const terminalSocketRef = useRef<TerminalSocketService>()
     const [isSocketClosed, toggleIsSocketClosed] = useState<boolean>()
 
@@ -46,7 +49,7 @@ export default function TerminalPage() {
     return (
         <>
             <Head>
-                <title>Терминал</title>
+                <title>Терминал | {user?.id}</title>
             </Head>
             <Grid container sx={{
                 justifyContent: 'center',

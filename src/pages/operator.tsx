@@ -72,6 +72,11 @@ export default function OperatorPage() {
                 <Box sx={{marginBottom: 2}}>
                     <Typography variant='h4' fontWeight='bold'>Оператор: #{user?.operator.windowNumber}</Typography>
                 </Box>
+                <Box sx={{marginBottom: 2}}>
+                    <Typography variant='h6' fontWeight='bold' color={'red'}>
+                        {isSocketClosed && 'Соединение с сервером прервалось! Обновите страницу'}
+                    </Typography>
+                </Box>
                 <Box sx={{marginBottom: 3}}>
                     <CoolDownButton variant='contained' coolDownSeconds={60} onClick={callNext} sx={{px: 4}}>Позвать
                         Следующиего</CoolDownButton>

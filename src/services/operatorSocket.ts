@@ -8,6 +8,7 @@ interface OperatorSocketServiceArgs {
     setCurrentNumber: Function
     toggleIsSocketClosed: Function
 }
+
 class OperatorSocketService extends BaseSocketService {
     setQueues: Function
     setCurrentNumber: Function
@@ -29,7 +30,7 @@ class OperatorSocketService extends BaseSocketService {
         }
 
         this.socket.onclose = (event) => {
-            console.log(event)
+            this.toggleIsSocketClosed(true)
         }
 
         this.socket.onmessage = (event) => {
@@ -51,7 +52,7 @@ class OperatorSocketService extends BaseSocketService {
         }
     }
 
-    callNext(){
+    callNext() {
         this.sendObject({
             type: OperatorEvents.CALL_NEXT
         })

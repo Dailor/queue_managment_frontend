@@ -56,7 +56,7 @@ class TicketSocketService extends BaseSocketService {
             }
         }
         this.socket.onclose = () => {
-
+            this.toggleIsSocketClosed(true)
         }
     }
 }
