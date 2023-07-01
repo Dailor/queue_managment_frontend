@@ -10,6 +10,8 @@ type ColorModeContextType = {
     theme: Theme
     toggleColorMode: () => void
     setMode: (mode: ColorPaletteType) => void
+    isShowHeader: boolean
+    toggleShowHeader: () => void
 }
 
 interface LocalThemeProviderProps {
@@ -18,9 +20,14 @@ interface LocalThemeProviderProps {
 
 export default function LocalThemeProvider({children}: LocalThemeProviderProps) {
     const [mode, setMode] = React.useState<ColorPaletteType>('light')
+    const [isShowHeader, setShowHeader] = React.useState<boolean>(true)
 
     const toggleColorMode = useCallback(() => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'))
+    }, [])
+
+    const toggleShowHeader = useCallback(() => {
+        setShowHeader((isShowHeader) => !isShowHeader)
     }, [])
 
     const theme = React.useMemo(
@@ -36,7 +43,7 @@ export default function LocalThemeProvider({children}: LocalThemeProviderProps) 
     )
 
     return (
-        <ColorModeContext.Provider value={{toggleColorMode, setMode, theme}}>
+        <ColorModeContext.Provider value={{toggleColorMode, setMode, theme, isShowHeader, toggleShowHeader}}>
             <ThemeProvider theme={theme}>
                 {children}
             </ThemeProvider>

@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useMemo, useReducer, useRef, useState} from "react"
 import {Box, Container, Grid, IconButton, Typography} from "@mui/material"
 import Head from "next/head"
-import {useTheme} from "@/providers/LocalThemeProvider"
 
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import Brightness7Icon from '@mui/icons-material/Brightness7'
 import DashboardSocketService from "@/services/dashboardSocket"
 import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
+import HeaderShowToggler from "@/components/HeaderShowToggler"
+import ThemeToggler from "@/components/ThemeToggler"
 
 const BLINKING_TIME = 5 * 1000
 
@@ -107,8 +106,6 @@ const dashboardReducer = (state: DashboardState, action: DashboardAction) => {
 }
 
 export default function DashboardPage() {
-    const {theme, toggleColorMode} = useTheme()
-
     const [windowToTicket, dispatcherWindowToTicket] = useReducer(dashboardReducer, {
         windows: {},
     })
@@ -143,14 +140,10 @@ export default function DashboardPage() {
             <Head>
                 <title>Табло</title>
             </Head>
-            <Container sx={{position: 'relative', paddingTop: 5}}>
-                <Box sx={{position: 'absolute', right: 0, top: 0}}>
-                    <IconButton sx={{ml: 1}} onClick={toggleColorMode} color="inherit">
-                        {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
-                    </IconButton>
-                </Box>
-                <Box sx={{marginBottom: 3}}>
-                    <Typography variant='h4' fontWeight='bold'>В очереди: {inQueueCount}</Typography>
+            <Container sx={{position: 'relative', marginBottom: 3}}>
+                <Box sx={{display: 'flex', justifyContent: 'end'}}>
+                    <HeaderShowToggler />
+                    <ThemeToggler />
                 </Box>
                 <Box>
                     <DashboardRow isHeader={true}
