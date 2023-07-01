@@ -98,7 +98,11 @@ export default function TicketPage() {
         audio.volume = 1
         audio.play()
 
-        navigator.vibrate(2000)
+        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate
+
+        if(navigator.vibrate !== undefined){
+            navigator.vibrate(2000)
+        }
 
         setWindowNumber(windowNumber)
     }
