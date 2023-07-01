@@ -3,22 +3,14 @@ import {
     AppBar,
     Box,
     IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
     Slide,
     Toolbar,
-    Typography
 } from "@mui/material"
-import {useRouter} from "next/router"
 import MenuIcon from '@mui/icons-material/Menu'
-import {useAuth} from "@/providers/AuthProvider"
-import {NavigationButtonLogout} from "@/components/navigation/NavigationButton"
 import NavigationList from "@/components/navigation/NavigationList"
 import logo from '/public/logo.png'
 import Image from "next/image"
-import {useTheme} from "@/providers/LocalThemeProvider";
+import {useTheme} from "@/providers/LocalThemeProvider"
 
 interface Props {
     isSidebarOpen: boolean
@@ -30,10 +22,7 @@ const Header = ({sidebarToggle}: Props) => {
 
     return (
         <Slide direction="down" in={isShowHeader} mountOnEnter unmountOnExit appear={false}>
-            <AppBar
-                position="fixed"
-                // sx={{display: isHidden ? 'hidden' : 'block'}}
-            >
+            <AppBar position="fixed">
                 <Toolbar sx={{justifyContent: 'space-betweeen'}}>
                     <Box sx={{flexGrow: 1}}>
                         <Image src={logo} alt="IITU Logo" width={211} height={32}/>
