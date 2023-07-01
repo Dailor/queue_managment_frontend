@@ -77,9 +77,9 @@ export default function TerminalPage() {
                     </Box>
                 </Grid>
                 <Grid item xs={12} sx={{textAlign: 'center'}}>
-                    <Typography variant={'h4'} sx={{color: 'primary.main'}}>Отсканируй Меня!</Typography>
-                    <Typography variant={'h4'} sx={{color: 'warning.main'}}>Мені Сканерлеңіз!</Typography>
-                    <Typography variant={'h4'} sx={{color: 'info.main'}}>Scan Me!</Typography>
+                    <Typography variant={'h4'} sx={{color: 'primary.main'}}>Отсканируйте QR!</Typography>
+                    <Typography variant={'h4'} sx={{color: 'warning.main'}}>QR Сканерлеңіз!</Typography>
+                    <Typography variant={'h4'} sx={{color: 'info.main'}}>Scan QR!</Typography>
                 </Grid>
                 {(process.env.DEBUG && !!token) && (
                     <Grid item xs={12} sx={{marginTop: 5, textAlign: 'center'}}>

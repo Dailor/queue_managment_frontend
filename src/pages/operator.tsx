@@ -79,7 +79,7 @@ export default function OperatorPage() {
                 </Box>
                 <Box sx={{marginBottom: 3}}>
                     <CoolDownButton variant='contained' coolDownSeconds={60} onClick={callNext} sx={{px: 4}}>Позвать
-                        Следующиего</CoolDownButton>
+                        Следующего</CoolDownButton>
                 </Box>
                 <Box sx={{marginBottom: 2, display: 'flex', flexWrap: 'wrap'}}>
                     <Box sx={{marginRight: 3}}>
