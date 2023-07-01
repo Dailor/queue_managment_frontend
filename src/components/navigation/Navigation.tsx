@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Header from "@/components/navigation/Header"
 import Sidebar from "@/components/navigation/Sidebar"
+import {useTheme} from "@/providers/LocalThemeProvider";
 
 
 function Navigation() {

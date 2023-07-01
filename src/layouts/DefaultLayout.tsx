@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react'
 import {AppProps} from "next/app"
 import {NextRouter, useRouter} from "next/router"
 import {useAuth} from "@/providers/AuthProvider"
-import {Box, CircularProgress, Toolbar} from "@mui/material"
+import {Box, CircularProgress, Slide, Toolbar} from "@mui/material"
 import Navigation from "@/components/navigation/Navigation"
+import {useTheme} from "@/providers/LocalThemeProvider"
 
 const checkRouteAndAccess = (router: NextRouter, routerPath: string, access: boolean) => {
     return router.pathname.startsWith(routerPath) && !access
@@ -21,6 +22,7 @@ const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
     const {isAuthFetching, isAuth, isAdmin, isDashboard, isTerminal, isOperator} = useAuth()
 
     const [isShowLoader, toggleIsShowLoader] = useState(true)
+    const {isShowHeader} = useTheme()
 
     const toggleOffLoader = () => {
         setTimeout(() => {
@@ -93,7 +95,9 @@ const DefaultLayout = ({Component, pageProps}: DefaultLayoutProps) => {
                 component="main"
                 sx={{flexGrow: 1, px: 3,}}
             >
-                <Toolbar/>
+                <Slide direction="down" in={isShowHeader} mountOnEnter unmountOnExit appear={false}>
+                    <Toolbar/>
+                </Slide>
                 {component}
             </Box>
         </Box>

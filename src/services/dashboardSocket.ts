@@ -30,7 +30,7 @@ class DashboardSocketService extends BaseSocketService {
         }
 
         this.socket.onclose = (event) => {
-            console.log(event)
+            this.onSocketClose()
         }
 
         this.socket.onmessage = (event) => {
