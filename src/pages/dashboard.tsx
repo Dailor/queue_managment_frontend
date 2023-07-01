@@ -19,7 +19,7 @@ type DashboardRowProps = {
 
 const callNextVoiceSynthesis = (windowNumber: number, ticketNumber: number) => {
     const audio = new Audio('/sounds/client_caller.mp3')
-    audio.volume = 0.5
+    audio.volume = 1
     audio.play()
 }
 const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) => {

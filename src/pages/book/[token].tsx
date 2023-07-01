@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import Head from "next/head"
 import {
     Box, Button,
@@ -31,6 +31,8 @@ interface ConfirmQueueModalProps {
     handleCancel: Function
     previousQueue: Queue
 }
+
+type ObjectIdToQueueType = Record<number, Queue>
 
 function ConfirmQueueModal({open, handleClose, handleConfirm, handleCancel, previousQueue}: ConfirmQueueModalProps) {
     return (
@@ -80,6 +82,16 @@ export default function Book() {
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
     const [queuesList, setQueuesList] = useState<Queue[]>([])
 
+    const objectIdToQueue = useMemo<ObjectIdToQueueType>(() => {
+        const r: ObjectIdToQueueType = {}
+
+        queuesList.map((queue) => {
+            r[queue.id] = queue
+        })
+
+        return r
+    }, [queuesList])
+
     const [isModalOpened, toggleIsModalOpened] = useState(false)
 
     const [queueSelectedId, setQueueSelectedId] = useState<Queue['id'] | null>(null)
@@ -119,11 +131,11 @@ export default function Book() {
             return setError(NOT_SELECTED_QUEUE_MSG)
         }
 
-        const selectedQueue = queuesList[queueSelectedId - 1]
+        const selectedQueue = objectIdToQueue[queueSelectedId]
 
         if (selectedQueue.previousQueueId !== null) {
             toggleIsModalOpened(true)
-            setPreviousQueue(queuesList[selectedQueue.previousQueueId - 1])
+            setPreviousQueue(objectIdToQueue[selectedQueue.previousQueueId])
         } else {
             submit()
             setPreviousQueue(null)

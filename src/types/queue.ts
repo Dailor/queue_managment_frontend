@@ -1,7 +1,7 @@
 type Queue = {
     id: number
     name: string
-    previousQueueId: number
+    previousQueueId: number | null
 }
 
 type QueueCount = Omit<Queue, 'previousQueueId'> & {

@@ -1,24 +1,16 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
     AppBar,
     Box,
     IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
     Slide,
     Toolbar,
-    Typography
 } from "@mui/material"
-import {useRouter} from "next/router"
 import MenuIcon from '@mui/icons-material/Menu'
-import {useAuth} from "@/providers/AuthProvider"
-import {NavigationButtonLogout} from "@/components/navigation/NavigationButton"
 import NavigationList from "@/components/navigation/NavigationList"
 import logo from '/public/logo.png'
 import Image from "next/image"
-import {useTheme} from "@/providers/LocalThemeProvider";
+import {useTheme} from "@/providers/LocalThemeProvider"
 
 interface Props {
     isSidebarOpen: boolean

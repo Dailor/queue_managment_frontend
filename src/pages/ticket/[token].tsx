@@ -95,8 +95,10 @@ export default function TicketPage() {
 
     const setIsCalled = ({windowNumber}: ISetIsCalled) => {
         const audio = new Audio('/sounds/client_caller.mp3')
-        audio.volume = 0.5
+        audio.volume = 1
         audio.play()
+
+        navigator.vibrate(2000)
 
         setWindowNumber(windowNumber)
     }
