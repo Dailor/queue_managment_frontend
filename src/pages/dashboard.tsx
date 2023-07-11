@@ -164,8 +164,6 @@ export default function DashboardPage() {
 
                             return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={createdAt}/>
                         })}
-                        <DashboardRow window={1} ticket={1} createdAt={1}/>
-                        <DashboardRow window={1} ticket={1} createdAt={1}/>
                     </Box>
                 </Box>
             </Container>
