@@ -7,6 +7,7 @@ import {Box, CircularProgress, Grid, Typography} from "@mui/material"
 
 import {QRCodeSVG} from 'qrcode.react'
 import {useAuth} from "@/providers/AuthProvider"
+import HeaderShowToggler from "@/components/HeaderShowToggler"
 
 const getLinkWithTicketHash = (token: string) => {
     return location.origin + '/scanner/' + token
@@ -51,22 +52,33 @@ export default function TerminalPage() {
             <Head>
                 <title>Терминал | {user?.id}</title>
             </Head>
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Box>
+                    {isSocketClosed && (
+                        <Typography color={'red'} sx={{fontWeight: '600', marginTop: -2}}>
+                            Подключение закрыто, обновите страницу!
+                        </Typography>
+                    )}
+                </Box>
+                <Box>
+                    <HeaderShowToggler/>
+                </Box>
+            </Box>
             <Grid container sx={{
                 justifyContent: 'center',
                 paddingTop: 8,
             }}>
                 <Grid item xs={12} sx={{marginBottom: 2, textAlign: 'center'}}>
-                    <Typography variant={'h3'} sx={{marginBottom: 4, fontWeight: '600'}}>
-                        Онлайн очередь
-                    </Typography>
-
                     {(isSocketClosed) && (
                         <Typography color={'red'} sx={{fontWeight: '600', marginTop: -2}}>
                             Подключение закрыто, обновите страницу!
                         </Typography>
                     )}
                 </Grid>
-                <Grid item xs={8} sm={5} md={3} lg={2}>
+                <Grid item xs={12} sx={{textAlign: 'center', marginBottom: 3}}>
+                    <Typography variant={'h4'} sx={{color: 'primary.main'}}>Наведи на меня камеру!</Typography>
+                </Grid>
+                <Grid item xs={11} sm={11} md={3} lg={6}>
                     <Box sx={{paddingX: 3, marginBottom: 6}}>
                         {(!isReady) && (
                             <CircularProgress size={'100%'} sx={{padding: 5}} thickness={2.5} color="primary"/>
@@ -76,11 +88,7 @@ export default function TerminalPage() {
                         )}
                     </Box>
                 </Grid>
-                <Grid item xs={12} sx={{textAlign: 'center'}}>
-                    <Typography variant={'h4'} sx={{color: 'primary.main'}}>Отсканируйте QR!</Typography>
-                    <Typography variant={'h4'} sx={{color: 'warning.main'}}>QR Сканерлеңіз!</Typography>
-                    <Typography variant={'h4'} sx={{color: 'info.main'}}>Scan QR!</Typography>
-                </Grid>
+
                 {(process.env.DEBUG && !!token) && (
                     <Grid item xs={12} sx={{marginTop: 5, textAlign: 'center'}}>
                         <a href={getLinkWithTicketHash(token)} target="_blank">Ссылка</a>
