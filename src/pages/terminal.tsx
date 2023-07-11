@@ -7,8 +7,7 @@ import {Box, CircularProgress, Grid, Typography} from "@mui/material"
 
 import {QRCodeSVG} from 'qrcode.react'
 import {useAuth} from "@/providers/AuthProvider"
-import HeaderShowToggler from "@/components/HeaderShowToggler";
-import ThemeToggler from "@/components/ThemeToggler";
+import HeaderShowToggler from "@/components/HeaderShowToggler"
 
 const getLinkWithTicketHash = (token: string) => {
     return location.origin + '/scanner/' + token
