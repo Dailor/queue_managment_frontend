@@ -98,8 +98,10 @@ export default function TicketPage() {
         audio.volume = 1
         audio.play()
 
-        if(navigator.vibrate !== undefined){
+        try {
             navigator.vibrate(2000)
+        } catch (e) {
+
         }
 
         setWindowNumber(windowNumber)
@@ -312,6 +314,7 @@ export default function TicketPage() {
                     {!isSocketClosed && (
                         <div>
                             <div>Не нужно обновлять страницу!</div>
+                            <div>Нельзя сворачивать браузер и менять вкладки!</div>
                             <div>Страница держит постоянное соединение с сервером!</div>
                         </div>
                     )}

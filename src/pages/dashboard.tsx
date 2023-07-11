@@ -23,10 +23,10 @@ const callNextVoiceSynthesis = (windowNumber: number, ticketNumber: number) => {
     audio.play()
 }
 const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) => {
-    const typographyVariant = isHeader ? 'h2' : 'h3'
+    const typographyVariant = isHeader ? 'h2' : 'h1'
     const fontWeight = isHeader ? 'normal' : 'bold'
 
-    const borderTop = isHeader ? '3px solid' : undefined
+    const borderTop = undefined
     const borderRight = '3px solid'
     const borderBottom = isHeader ? '3px solid' : undefined
     const borderLeft = isHeader ? '3px solid' : undefined
@@ -56,12 +56,12 @@ const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) 
                 marginBottom: 3
             },
         }}>
-            <Box sx={{flexBasis: '30%', marginRight: 6, borderTop, borderRight, borderBottom, p: 1.2}}>
-                <Typography variant={typographyVariant}
-                            fontWeight={fontWeight}>{window}</Typography></Box>
-            <Box sx={{flexBasis: '70%', borderTop, borderBottom, borderLeft, p: 1.2}}>
+            <Box sx={{flexBasis: '50%', marginRight: 6, borderTop, borderRight, borderBottom, p: 1.2}}>
                 <Typography variant={typographyVariant}
                             fontWeight={fontWeight}>{ticket}</Typography></Box>
+            <Box sx={{flexBasis: '50%', borderTop, borderBottom, borderLeft, p: 1.2}}>
+                <Typography variant={typographyVariant}
+                            fontWeight={fontWeight}>{window}</Typography></Box>
         </Box>
     )
 }
@@ -140,21 +140,32 @@ export default function DashboardPage() {
             <Head>
                 <title>Табло</title>
             </Head>
-            <Container sx={{position: 'relative', marginBottom: 3}}>
-                <Box sx={{display: 'flex', justifyContent: 'end'}}>
-                    <HeaderShowToggler />
-                    <ThemeToggler />
+            <Container sx={{position: 'relative', marginBottom: 3, height: '100vh'}}>
+                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Box>
+                        {isSocketClosed && (
+                            <Typography color={'red'} sx={{fontWeight: '600', marginTop: -2}}>
+                                Подключение закрыто, обновите страницу!
+                            </Typography>
+                        )}
+                    </Box>
+                    <Box>
+                        <HeaderShowToggler/>
+                        <ThemeToggler/>
+                    </Box>
                 </Box>
-                <Box>
+                <Box sx={{border: 3, height: '100%'}}>
                     <DashboardRow isHeader={true}
-                                  window={'Окно'}
-                                  ticket={'Талон'}/>
+                                  window={'Подойдите к окну'}
+                                  ticket={'Ваш талон'}/>
                     <Box>
                         {Object.keys(windowToTicket.windows).map(window => {
                             const {ticket, createdAt} = windowToTicket.windows[window as unknown as number]
 
                             return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={createdAt}/>
                         })}
+                        <DashboardRow window={1} ticket={1} createdAt={1}/>
+                        <DashboardRow window={1} ticket={1} createdAt={1}/>
                     </Box>
                 </Box>
             </Container>

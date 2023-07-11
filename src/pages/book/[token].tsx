@@ -239,7 +239,7 @@ export default function Book() {
                                     onChange={onChange}
                                 >
                                     {queuesList.map((queueItem) => (
-                                        <MenuItem value={queueItem.id} key={queueItem.id}>{queueItem.name}</MenuItem>
+                                        <MenuItem value={queueItem.id} key={queueItem.id} sx={{whiteSpace: 'normal'}}>{queueItem.name}</MenuItem>
                                     ))}
                                 </Select>
                                 <FormHelperText>{error}</FormHelperText>
