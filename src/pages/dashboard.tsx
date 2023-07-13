@@ -102,7 +102,7 @@ const handleTicket = (item: PayloadAddNew) => {
 }
 
 const formatToWindowNumberToTicket = (windows_to_ticket_numbers: PayloadAddNew[]) => {
-    const r = {}
+    const r: DashboardState['windows'] = {}
 
     windows_to_ticket_numbers.map(item => {
         r[item.window] = handleTicket(item)
