@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useLayoutEffect, useMemo, useState} from 'react'
 import Head from "next/head"
 import {
     Box, Button,
@@ -159,7 +159,7 @@ export default function Book() {
         setQueueSelectedId(e.target.value)
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         queueListRequest()
             .then(r => {
                 setQueuesList(r.data.queues)

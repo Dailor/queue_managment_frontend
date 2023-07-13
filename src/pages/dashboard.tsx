@@ -17,11 +17,12 @@ type DashboardRowProps = {
     createdAt?: number
 }
 
-const callNextVoiceSynthesis = (windowNumber: number, ticketNumber: number) => {
+const callNexMusicPlay = () => {
     const audio = new Audio('/sounds/client_caller.mp3')
     audio.volume = 1
     audio.play()
 }
+
 const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) => {
     const typographyVariant = isHeader ? 'h2' : 'h1'
     const fontWeight = isHeader ? 'normal' : 'bold'
@@ -56,10 +57,10 @@ const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) 
                 marginBottom: 3
             },
         }}>
-            <Box sx={{flexBasis: '50%', marginRight: 6, borderTop, borderRight, borderBottom, p: 1.2}}>
+            <Box sx={{flexBasis: '40%', marginRight: 6, borderTop, borderRight, borderBottom, p: 1.2}}>
                 <Typography variant={typographyVariant}
                             fontWeight={fontWeight}>{ticket}</Typography></Box>
-            <Box sx={{flexBasis: '50%', borderTop, borderBottom, borderLeft, p: 1.2}}>
+            <Box sx={{flexBasis: '60%', borderTop, borderBottom, borderLeft, p: 1.2}}>
                 <Typography variant={typographyVariant}
                             fontWeight={fontWeight}>{window}</Typography></Box>
         </Box>
@@ -75,34 +76,65 @@ type DashboardState = {
     }
 }
 
-type DashboardActionType = 'ADD_NEW'
+type DashboardActionType = 'ADD_NEW' | 'ADD_LIST'
+
+type PayloadAddNew = {
+    window: number
+    ticket: number
+}
+
+type PayloadLoadList = {
+    windows_to_ticket_numbers: PayloadAddNew[]
+}
+
+type PayloadTypes = PayloadAddNew | PayloadLoadList
 
 type DashboardAction = {
-    payload: {
-        window: number
-        ticket: number
-    }
+    payload: PayloadTypes
     type: DashboardActionType
 }
 
+const handleTicket = (item: PayloadAddNew) => {
+    return {
+        ticket: item.ticket,
+        createdAt: (new Date()).getTime()
+    }
+}
+
+const formatToWindowNumberToTicket = (windows_to_ticket_numbers: PayloadAddNew[]) => {
+    const r = {}
+
+    windows_to_ticket_numbers.map(item => {
+        r[item.window] = handleTicket(item)
+    })
+
+    return r
+}
 
 const dashboardReducer = (state: DashboardState, action: DashboardAction) => {
     const {payload, type} = action
-    switch (type) {
-        case "ADD_NEW":
-            return {
-                ...state,
-                windows: {
-                    ...state.windows,
-                    [payload.window]: {
-                        ticket: payload.ticket,
-                        createdAt: (new Date()).getTime()
-                    }
-                }
+    if (type === "ADD_NEW") {
+        const payloadAsAddNew = payload as PayloadAddNew
+
+        return {
+            ...state,
+            windows: {
+                ...state.windows,
+                [payloadAsAddNew.window]: handleTicket(payloadAsAddNew)
             }
-        default:
-            return {...state}
+        }
+    } else if (type === "ADD_LIST") {
+        const payloadAsLoadList = payload as PayloadLoadList
+
+        return {
+            ...state,
+            windows: {
+                ...state.windows,
+                ...formatToWindowNumberToTicket(payloadAsLoadList.windows_to_ticket_numbers)
+            }
+        }
     }
+    return {...state}
 }
 
 export default function DashboardPage() {
@@ -120,7 +152,16 @@ export default function DashboardPage() {
             payload: {window, ticket}
         })
 
-        callNextVoiceSynthesis(window, ticket)
+        callNexMusicPlay()
+    }, [])
+
+    const loadListOnDashboard = useCallback((windows_to_ticket_numbers: PayloadAddNew[]) => {
+        dispatcherWindowToTicket({
+            type: 'ADD_LIST',
+            payload: {windows_to_ticket_numbers}
+        })
+
+        callNexMusicPlay()
     }, [])
 
     useEffect(() => {
@@ -129,11 +170,12 @@ export default function DashboardPage() {
                 dashboardSocketRef.current = new DashboardSocketService({
                     addNewOnDashboard,
                     setInQueueCount,
-                    toggleIsSocketClosed
+                    toggleIsSocketClosed,
+                    loadListOnDashboard
                 })
                 dashboardSocketRef.current?.init(getAccessTokenFromLocalStorage() as string)
             })
-    }, [addNewOnDashboard])
+    }, [addNewOnDashboard, loadListOnDashboard])
 
     return (
         <>
@@ -162,7 +204,7 @@ export default function DashboardPage() {
                         {Object.keys(windowToTicket.windows).map(window => {
                             const {ticket, createdAt} = windowToTicket.windows[window as unknown as number]
 
-                            return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={createdAt}/>
+                            return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={window}/>
                         })}
                     </Box>
                 </Box>
