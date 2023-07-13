@@ -66,7 +66,7 @@ export default function TerminalPage() {
             </Box>
             <Grid container sx={{
                 justifyContent: 'center',
-                paddingTop: 8,
+                // paddingTop: 8,
             }}>
                 <Grid item xs={12} sx={{marginBottom: 2, textAlign: 'center'}}>
                     {(isSocketClosed) && (
@@ -78,7 +78,7 @@ export default function TerminalPage() {
                 <Grid item xs={12} sx={{textAlign: 'center', marginBottom: 3}}>
                     <Typography variant={'h4'} sx={{color: 'primary.main'}}>Наведи на меня камеру!</Typography>
                 </Grid>
-                <Grid item xs={11} sm={11} md={3} lg={6}>
+                <Grid item xs={11} sm={11} md={11} lg={6}>
                     <Box sx={{paddingX: 3, marginBottom: 6}}>
                         {(!isReady) && (
                             <CircularProgress size={'100%'} sx={{padding: 5}} thickness={2.5} color="primary"/>

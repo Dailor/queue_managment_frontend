@@ -8,16 +8,19 @@ interface DashboardSocketServiceArgs {
     toggleIsSocketClosed: Function
     addNewOnDashboard: Function
     setInQueueCount: Function
+    loadListOnDashboard: Function
 }
 
 class DashboardSocketService extends BaseSocketService {
     addNewOnDashboard: Function
     setInQueueCount: Function
+    loadListOnDashboard: Function
 
-    constructor({addNewOnDashboard, setInQueueCount, toggleIsSocketClosed}: DashboardSocketServiceArgs) {
+    constructor({addNewOnDashboard, setInQueueCount, toggleIsSocketClosed, loadListOnDashboard}: DashboardSocketServiceArgs) {
         super({toggleIsSocketClosed})
         this.addNewOnDashboard = addNewOnDashboard
         this.setInQueueCount = setInQueueCount
+        this.loadListOnDashboard = loadListOnDashboard
     }
 
     init(token: string) {
@@ -40,6 +43,8 @@ class DashboardSocketService extends BaseSocketService {
             const payload = data.payload
 
             switch (eventType) {
+                case DashboardEvents.BASIC_LOAD:
+                    return this.loadListOnDashboard(payload.windows_to_ticket_numbers)
                 case BasicQueueEvents.UPDATE_IN_QUEUE_COUNT:
                     return this.setInQueueCount(payload.count)
                 case OperatorEvents.CALL_NEXT:

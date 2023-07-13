@@ -60,12 +60,6 @@ function TicketErrorPage({errorCode}: TicketErrorPageProps) {
                             <Button variant='contained' onClick={redirectToBook} size='large'>Обновить</Button>
                         </Box>
                     )}
-                    {(errorCode === -1) && (
-                        <Box style={{color: 'red'}}>
-                            <div>Соединение с сервером оборвалось!</div>
-                            <div>Обновите страницу!</div>
-                        </Box>
-                    )}
                 </Grid>
             </Grid>
         </>
@@ -158,7 +152,7 @@ export default function TicketPage() {
     const isWindowNumberNotSet = windowNumber === -1
     const isLoaded = !!ticketFull && inFrontCount !== null
 
-    if (errorCode !== undefined) {
+    if (errorCode == 1) {
         return (
             <TicketErrorPage errorCode={errorCode}/>
         )
@@ -288,7 +282,7 @@ export default function TicketPage() {
                                     <Typography color='secondary' sx={{fontSize: 15, fontWeight: '700'}}>
                                         Смотрите за очередью
                                         <br/>
-                                        на этой странице или на табло
+                                        на табло или на этой странице
                                     </Typography>
                                 </SkeletonPlaceHolderWrapper>
                             </>
@@ -307,6 +301,19 @@ export default function TicketPage() {
                     </Box>
                 </Grid>
             </Grid>
+            {(errorCode == -1 && (
+                <Snackbar
+                    anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+                    open={isAlwaysConnAlertOpened && isLoaded}>
+                    <Alert severity="error" onClose={() => toggleIsAlwaysConnAlertOpened(false)}>
+                        <Box style={{color: 'red'}}>
+                            <div>Соединение с сервером оборвалось! Сделайте фото экрана</div>
+                            <div>Если хотите смотреть за очередью с телефона, обновите страницу!</div>
+                        </Box>
+                    </Alert>
+                </Snackbar>
+            ))}
+
             <Snackbar
                 anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
                 open={isAlwaysConnAlertOpened && isLoaded}>
@@ -314,7 +321,7 @@ export default function TicketPage() {
                     {!isSocketClosed && (
                         <div>
                             <div>Не нужно обновлять страницу!</div>
-                            <div>Нельзя сворачивать браузер и менять вкладки!</div>
+                            <div>Нельзя сворачивать браузер и менять или закрывать вкладку!</div>
                             <div>Страница держит постоянное соединение с сервером!</div>
                         </div>
                     )}
