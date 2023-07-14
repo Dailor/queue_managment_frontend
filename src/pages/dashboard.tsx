@@ -49,15 +49,6 @@ const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) 
     const borderBottom = isHeader ? '3px solid' : undefined
     const borderLeft = isHeader ? '3px solid' : undefined
 
-
-    useEffect(() => {
-        if (!isHeader)
-            setTimeout(() => {
-                setIsHidden(true)
-            }, 150 * 1000)
-    }, [isHeader])
-
-
     return (
         <Box sx={{
             display: isHidden ? 'none' : 'flex', textAlign: 'center',
@@ -212,7 +203,7 @@ export default function DashboardPage() {
                         {Object.keys(windowToTicket.windows).map(window => {
                             const {ticket, createdAt} = windowToTicket.windows[window as unknown as number]
 
-                            return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={createdAt}/>
+                            return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={window}/>
                         })}
                     </Box>
                 </Box>
