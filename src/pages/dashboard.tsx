@@ -204,7 +204,7 @@ export default function DashboardPage() {
                         {Object.keys(windowToTicket.windows).map(window => {
                             const {ticket, createdAt} = windowToTicket.windows[window as unknown as number]
 
-                            return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={window}/>
+                            return <DashboardRow window={window} ticket={ticket} createdAt={createdAt} key={createdAt}/>
                         })}
                     </Box>
                 </Box>
