@@ -313,20 +313,19 @@ export default function TicketPage() {
                     </Alert>
                 </Snackbar>
             ))}
-
-            <Snackbar
-                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-                open={isAlwaysConnAlertOpened && isLoaded}>
-                <Alert severity="error" onClose={() => toggleIsAlwaysConnAlertOpened(false)}>
-                    {!isSocketClosed && (
+            {(!isSocketClosed && isWindowNumberNotSet) && (
+                <Snackbar
+                    anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                    open={isAlwaysConnAlertOpened && isLoaded}>
+                    <Alert severity="error" onClose={() => toggleIsAlwaysConnAlertOpened(false)}>
                         <div>
                             <div>Не нужно обновлять страницу!</div>
                             <div>Нельзя сворачивать браузер и менять или закрывать вкладку!</div>
                             <div>Страница держит постоянное соединение с сервером!</div>
                         </div>
-                    )}
-                </Alert>
-            </Snackbar>
+                    </Alert>
+                </Snackbar>
+            )}
         </>
     )
 }
