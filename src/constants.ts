@@ -6,6 +6,12 @@ export const getHost = () => {
     }
 }
 
+const TTS_API_STATIC_ENDPOINT = 'http://proct.iitu.edu.kz/tts/static/queue'
+
+export const get_tts_api_static = (filename: string) => {
+    return TTS_API_STATIC_ENDPOINT + '/' + filename
+}
+
 export const BACKEND_URL = process.env.DEBUG ? `http://${getHost()}` : `https://${getHost()}`
 
 export const ACCEPT_TOKEN_KEY = 'access-token'

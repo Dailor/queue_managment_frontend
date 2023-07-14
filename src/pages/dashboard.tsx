@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useReducer, useRef, useState} from "react"
-import {Box, Container, Grid, IconButton, Typography} from "@mui/material"
+import React, {useCallback, useEffect, useReducer, useRef, useState} from "react"
+import {Box, Container, Typography} from "@mui/material"
 import Head from "next/head"
 
 import DashboardSocketService from "@/services/dashboardSocket"
@@ -7,8 +7,8 @@ import {loadUserMeRequestApi} from "@/providers/AuthProvider.api"
 import {getAccessTokenFromLocalStorage} from "@/utilities/jwt"
 import HeaderShowToggler from "@/components/HeaderShowToggler"
 import ThemeToggler from "@/components/ThemeToggler"
+import {get_tts_api_static} from "@/constants"
 
-const BLINKING_TIME = 5 * 1000
 
 type DashboardRowProps = {
     isHeader?: boolean
@@ -17,42 +17,50 @@ type DashboardRowProps = {
     createdAt?: number
 }
 
+const callNextMusicAndVoicePlay = (filename: string) => {
+    callNexMusicPlay().then(() => {
+        if (!filename) {
+            return
+        }
+        setTimeout(() => {
+            const audio = new Audio(get_tts_api_static(filename))
+
+            audio.volume = 1
+            audio.playbackRate = 0.80
+            audio.play()
+        }, 1000)
+    })
+}
 const callNexMusicPlay = () => {
     const audio = new Audio('/sounds/client_caller.mp3')
     audio.volume = 1
-    audio.play()
+    return audio.play()
 }
 
 const DashboardRow = ({isHeader, window, ticket, createdAt}: DashboardRowProps) => {
     const typographyVariant = isHeader ? 'h2' : 'h1'
     const fontWeight = isHeader ? 'normal' : 'bold'
 
+    const [isHidden, setIsHidden] = useState(false)
+
+
     const borderTop = undefined
     const borderRight = '3px solid'
     const borderBottom = isHeader ? '3px solid' : undefined
     const borderLeft = isHeader ? '3px solid' : undefined
 
-    const [isBlinking, toggleIsBlinking] = useState<boolean>(false)
 
     useEffect(() => {
-        if (createdAt) {
-            toggleIsBlinking(true)
+        if (!isHeader)
+            setTimeout(() => {
+                setIsHidden(true)
+            }, 150 * 1000)
+    }, [isHeader])
 
-            const intervalID = setInterval(() => {
-                    const nowAtInt = (new Date()).getTime()
-
-                    if (nowAtInt - createdAt > BLINKING_TIME) {
-                        toggleIsBlinking(false)
-                        clearInterval(intervalID)
-                    }
-                },
-                200)
-        }
-    }, [createdAt])
 
     return (
         <Box sx={{
-            display: 'flex', textAlign: 'center',
+            display: isHidden ? 'none' : 'flex', textAlign: 'center',
             '&': {
                 marginBottom: 3
             },
@@ -146,13 +154,13 @@ export default function DashboardPage() {
     const dashboardSocketRef = useRef<DashboardSocketService>()
     const [isSocketClosed, toggleIsSocketClosed] = useState()
 
-    const addNewOnDashboard = useCallback((window: number, ticket: number) => {
+    const addNewOnDashboard = useCallback((window: number, ticket: number, filename: string) => {
         dispatcherWindowToTicket({
             type: 'ADD_NEW',
             payload: {window, ticket}
         })
 
-        callNexMusicPlay()
+        callNextMusicAndVoicePlay(filename)
     }, [])
 
     const loadListOnDashboard = useCallback((windows_to_ticket_numbers: PayloadAddNew[]) => {
