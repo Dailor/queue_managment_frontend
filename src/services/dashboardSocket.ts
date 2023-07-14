@@ -48,7 +48,7 @@ class DashboardSocketService extends BaseSocketService {
                 case BasicQueueEvents.UPDATE_IN_QUEUE_COUNT:
                     return this.setInQueueCount(payload.count)
                 case OperatorEvents.CALL_NEXT:
-                    return this.addNewOnDashboard(payload.window, payload.ticket)
+                    return this.addNewOnDashboard(payload.window, payload.ticket, payload.filename)
                 default:
                     break
             }
