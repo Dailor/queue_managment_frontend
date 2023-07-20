@@ -3,6 +3,4 @@ export interface IUser {
     fullName: string
     email: string
     role: string
-    departmentID: number
-    department: string
 }
